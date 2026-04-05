@@ -357,6 +357,11 @@ Rules:
 - Every tab must appear in exactly one mission — no tab should be left out. If a tab is genuinely miscellaneous, create a "Miscellaneous" mission for it.
 - Write a concise 1-sentence summary for each mission. The summary should sound like a casual human note to yourself — never say "the user" or "the reader." Just describe the activity directly. Examples: "Digging into how Anthropic's constitutional AI actually works." or "Setting up Stripe billing for the new project." Keep it conversational and natural.
 
+Also write a "personalMessage" — a single witty, slightly humorous observation about this person based on their open tabs. Write it as if you're a friend glancing at their screen. Keep it warm, specific to their actual tabs (reference real things you see), and under 20 words. Examples:
+- "12 AI tools open and counting. You're either building the future or procrastinating on it."
+- "Three localhost projects, two research rabbit holes, and a recipe. Classic."
+- "The USCIS tab has been there for weeks, hasn't it? Hang in there."
+
 IMPORTANT — granularity rules:
 - **Individual content pieces get their own mission.** Each YouTube video, blog post, article, or podcast is its own mission — named after the content (e.g., "Watching: Building Is the Easy Part Now | Mike Knoop"). Do NOT lump unrelated content tabs together under a generic name like "Watching AI Videos."
 - **localhost tabs are vibe coding project previews.** Group localhost tabs by PORT number — each port is a different project. Name the mission after the page title or what the project appears to be (e.g., "Brand DNA Tool (localhost:5173)"). If multiple localhost tabs share the same port, they're the same project.
@@ -365,6 +370,7 @@ IMPORTANT — granularity rules:
 
 Respond ONLY with valid JSON in this exact format (no markdown, no explanation):
 {
+  "personalMessage": "Your witty one-liner about this person's tabs goes here.",
   "missions": [
     {
       "name": "Short, specific mission name",
@@ -401,7 +407,11 @@ function parseOpenTabsResponse(responseText, tabs) {
     throw new Error(`[clustering] Open-tabs response missing "missions" array. Got: ${JSON.stringify(parsed).slice(0, 200)}`);
   }
 
-  return parsed.missions.map(mission => {
+  // Extract the personalMessage from the top level of the response.
+  // This is the witty one-liner DeepSeek writes after glancing at all the tabs.
+  const personalMessage = parsed.personalMessage || null;
+
+  const missions = parsed.missions.map(mission => {
     // tab_indices are 1-based (matching our numbered list in the prompt)
     const tabIndices = Array.isArray(mission.tab_indices) ? mission.tab_indices : [];
     const resolvedTabs = tabIndices
@@ -415,6 +425,10 @@ function parseOpenTabsResponse(responseText, tabs) {
       tabs:    resolvedTabs,
     };
   });
+
+  // Return both the missions array and the personalMessage together.
+  // The caller (clusterOpenTabs) will pass both through to the route handler.
+  return { missions, personalMessage };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -458,9 +472,10 @@ async function clusterOpenTabs(tabs) {
     throw err;
   }
 
-  const missions = parseOpenTabsResponse(responseText, tabs);
+  const { missions, personalMessage } = parseOpenTabsResponse(responseText, tabs);
   console.log(`[clustering] clusterOpenTabs: got ${missions.length} missions`);
-  return missions;
+  // Return both missions and the personalMessage so the route can pass it to the client
+  return { missions, personalMessage };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

@@ -740,3 +740,115 @@ footer { animation: fadeUp 0.5s ease 0.65s both; }
   color: var(--muted);
   letter-spacing: 0.2px;
 }
+
+
+/* ================================================================
+   AI PERSONAL MESSAGE
+   The witty one-liner DeepSeek writes about the user's tab habits.
+   Appears above the mission cards in the AI view.
+   Styled as a warm, handwritten-feeling editorial aside.
+   ================================================================ */
+
+.ai-personal-message {
+  /* Sits between the section header and the mission grid */
+  margin-bottom: 20px;
+  margin-top: -4px;
+
+  /* Left border — a thin warm stripe that gives it a "margin note" feel */
+  border-left: 3px solid var(--accent-amber);
+  padding: 10px 0 10px 18px;
+
+  /* Typography: Newsreader italic gives it a personal, handwritten quality */
+  font-family: 'Newsreader', serif;
+  font-style: italic;
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 1.5;
+  color: var(--ink);
+  opacity: 0.75;
+
+  /* Fade in when it appears */
+  animation: fadeUp 0.5s ease 0.1s both;
+}
+
+/* The opening quotation mark — oversized, sits as a visual anchor */
+.ai-personal-message-quote {
+  font-size: 22px;
+  line-height: 0;
+  vertical-align: -0.25em;
+  margin-right: 4px;
+  color: var(--accent-amber);
+  opacity: 0.6;
+  font-style: normal;
+}
+
+
+/* ================================================================
+   MISSIONS EMPTY STATE
+   Shown when all mission cards have been closed.
+   A calm, satisfying "you did it" moment.
+   ================================================================ */
+
+.missions-empty-state {
+  /* Takes the full grid width — span all columns */
+  grid-column: 1 / -1;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+
+  padding: 56px 24px;
+  text-align: center;
+
+  animation: fadeUp 0.5s ease both;
+}
+
+/* CSS-drawn checkmark in a glowing circle */
+.empty-checkmark {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(90, 122, 98, 0.1);
+  border: 1.5px solid rgba(90, 122, 98, 0.3);
+
+  /* Soft sage glow */
+  box-shadow: 0 0 0 8px rgba(90, 122, 98, 0.05),
+              0 0 0 16px rgba(90, 122, 98, 0.03);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* Pop in with a gentle scale animation */
+  animation: checkPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s both;
+}
+
+.empty-checkmark svg {
+  width: 26px;
+  height: 26px;
+  color: var(--accent-sage);
+  stroke-width: 2.5;
+}
+
+@keyframes checkPop {
+  from { transform: scale(0.6); opacity: 0; }
+  to   { transform: scale(1);   opacity: 1; }
+}
+
+.empty-title {
+  font-family: 'Newsreader', serif;
+  font-size: 20px;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--ink);
+  letter-spacing: -0.3px;
+}
+
+.empty-subtitle {
+  font-size: 13px;
+  color: var(--muted);
+  font-weight: 400;
+  letter-spacing: 0.3px;
+}

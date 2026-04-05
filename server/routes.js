@@ -367,8 +367,10 @@ router.get('/stats', (req, res) => {
 // Request body:  { tabs: [{ url, title, tabId }] }
 // Response body: { missions: [{ name, summary, tabs: [{ url, title, tabId }] }] }
 // ─────────────────────────────────────────────────────────────────────────────
-// Cache for tab clustering — avoids calling DeepSeek if tabs haven't changed
-let clusterCache = { urlKey: '', result: null };
+// Cache for tab clustering — avoids calling DeepSeek if tabs haven't changed.
+// We also cache the personalMessage alongside the missions so a cache hit
+// can still show the witty one-liner without an extra AI call.
+let clusterCache = { urlKey: '', result: null, personalMessage: null };
 
 // ─────────────────────────────────────────────────────────────────────────────
 // GET /api/cluster-tabs/cached
@@ -388,10 +390,15 @@ let clusterCache = { urlKey: '', result: null };
 router.get('/cluster-tabs/cached', (req, res) => {
   const { urlKey } = req.query;
 
-  // If we have a cached result AND it matches the current tab set, return it
+  // If we have a cached result AND it matches the current tab set, return it.
+  // We pass personalMessage through too so the UI can show the AI's witty note.
   if (urlKey && clusterCache.urlKey === urlKey && clusterCache.result) {
     console.log('[routes] GET /cluster-tabs/cached — cache hit');
-    return res.json({ cached: true, missions: clusterCache.result });
+    return res.json({
+      cached: true,
+      missions: clusterCache.result,
+      personalMessage: clusterCache.personalMessage || null,
+    });
   }
 
   // No match — tell the dashboard it needs to call POST /cluster-tabs
@@ -440,14 +447,19 @@ router.post('/cluster-tabs', async (req, res) => {
 
   if (clusterCache.urlKey === urlKey && clusterCache.result) {
     console.log('[routes] Tab clustering cache hit — skipping DeepSeek call');
-    return res.json({ missions: clusterCache.result, duplicates });
+    return res.json({
+      missions: clusterCache.result,
+      duplicates,
+      personalMessage: clusterCache.personalMessage || null,
+    });
   }
 
   try {
-    const missions = await clusterOpenTabs(filteredTabs);
-    // Cache the result
-    clusterCache = { urlKey, result: missions };
-    res.json({ missions, duplicates });
+    // clusterOpenTabs now returns { missions, personalMessage }
+    const { missions, personalMessage } = await clusterOpenTabs(filteredTabs);
+    // Cache both the missions and the personalMessage
+    clusterCache = { urlKey, result: missions, personalMessage: personalMessage || null };
+    res.json({ missions, duplicates, personalMessage: personalMessage || null });
   } catch (err) {
     console.error('[routes] POST /cluster-tabs failed:', err.message);
     res.status(500).json({ error: 'Failed to cluster tabs: ' + err.message });

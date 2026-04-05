@@ -173,19 +173,129 @@ function playCloseSound() {
 }
 
 /**
+ * shootConfetti(x, y)
+ *
+ * Shoots a burst of colorful confetti particles from the given screen
+ * coordinates (typically the center of a card being closed).
+ *
+ * Each particle:
+ * - Is either a circle or a square (randomly chosen)
+ * - Uses the dashboard's color palette: amber, sage, slate, with some light variants
+ * - Flies outward in a random direction with a gravity arc
+ * - Fades out over ~800ms, then is removed from the DOM
+ *
+ * Pure CSS + JS, no libraries.
+ */
+function shootConfetti(x, y) {
+  // Color palette drawn from the dashboard's CSS variables
+  const colors = [
+    '#c8713a', // amber
+    '#e8a070', // amber light
+    '#5a7a62', // sage
+    '#8aaa92', // sage light
+    '#5a6b7a', // slate
+    '#8a9baa', // slate light
+    '#d4b896', // warm paper
+    '#b35a5a', // rose
+  ];
+
+  const particleCount = 17;
+
+  for (let i = 0; i < particleCount; i++) {
+    const el = document.createElement('div');
+
+    // Randomly decide: circle or square
+    const isCircle = Math.random() > 0.5;
+    const size = 5 + Math.random() * 6; // 5–11px
+
+    // Pick a random color from the palette
+    const color = colors[Math.floor(Math.random() * colors.length)];
+
+    // Style the particle
+    el.style.cssText = `
+      position: fixed;
+      left: ${x}px;
+      top: ${y}px;
+      width: ${size}px;
+      height: ${size}px;
+      background: ${color};
+      border-radius: ${isCircle ? '50%' : '2px'};
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      opacity: 1;
+    `;
+    document.body.appendChild(el);
+
+    // Physics: random angle and speed for the outward burst
+    const angle  = Math.random() * Math.PI * 2;           // random direction (radians)
+    const speed  = 60 + Math.random() * 120;              // px/second
+    const vx     = Math.cos(angle) * speed;               // horizontal velocity
+    const vy     = Math.sin(angle) * speed - 80;          // vertical: bias upward a bit
+    const gravity = 200;                                   // downward pull (px/s²)
+
+    const startTime = performance.now();
+    const duration  = 700 + Math.random() * 200;          // 700–900ms
+
+    // Animate with requestAnimationFrame for buttery-smooth motion
+    function frame(now) {
+      const elapsed = (now - startTime) / 1000; // seconds
+      const progress = elapsed / (duration / 1000);
+
+      if (progress >= 1) {
+        el.remove();
+        return;
+      }
+
+      // Position: initial velocity + gravity arc
+      const px = vx * elapsed;
+      const py = vy * elapsed + 0.5 * gravity * elapsed * elapsed;
+
+      // Fade out during the second half of the animation
+      const opacity = progress < 0.5 ? 1 : 1 - (progress - 0.5) * 2;
+
+      // Slight rotation for realism
+      const rotate = elapsed * 200 * (isCircle ? 0 : 1); // squares spin, circles don't
+
+      el.style.transform = `translate(calc(-50% + ${px}px), calc(-50% + ${py}px)) rotate(${rotate}deg)`;
+      el.style.opacity = opacity;
+
+      requestAnimationFrame(frame);
+    }
+
+    requestAnimationFrame(frame);
+  }
+}
+
+/**
  * animateCardOut(card)
  *
  * Smoothly removes a mission card in two phases:
- * 1. Fade out + slide right (GPU-accelerated, smooth)
- * 2. After fade completes, collapse the height
- * 3. After collapse, remove from DOM
+ * 1. Fade out + scale down (GPU-accelerated, smooth)
+ * 2. After fade completes, remove from DOM
+ *
+ * Also fires confetti from the card's center for a satisfying "done!" moment.
  */
 function animateCardOut(card) {
   if (!card) return;
+
+  // Get the card's center position on screen for the confetti origin
+  const rect = card.getBoundingClientRect();
+  const cx = rect.left + rect.width  / 2;
+  const cy = rect.top  + rect.height / 2;
+
+  // Shoot confetti from the card's center
+  shootConfetti(cx, cy);
+
   // Phase 1: fade + scale down
   card.classList.add('closing');
   // Phase 2: remove from DOM after animation
-  setTimeout(() => card.remove(), 300);
+  setTimeout(() => {
+    card.remove();
+    // After card is gone, check if the missions grid is now empty
+    // and show the empty state if so
+    checkAndShowEmptyState();
+  }, 300);
 }
 
 function showToast(message) {
@@ -193,6 +303,44 @@ function showToast(message) {
   document.getElementById('toastText').textContent = message;
   toast.classList.add('visible');
   setTimeout(() => toast.classList.remove('visible'), 2500);
+}
+
+/**
+ * checkAndShowEmptyState()
+ *
+ * Called after each card is removed from the DOM. If all mission cards
+ * are gone (the grid is empty), we swap in a fun empty state instead of
+ * showing a blank, lifeless grid.
+ *
+ * Only activates in AI view (isAIView = true), since the static domain
+ * view handles its own zero-tabs case separately.
+ */
+function checkAndShowEmptyState() {
+  if (!isAIView) return;
+
+  const missionsEl = document.getElementById('openTabsMissions');
+  if (!missionsEl) return;
+
+  // Count remaining mission cards (excludes anything already animating out)
+  const remaining = missionsEl.querySelectorAll('.mission-card:not(.closing)').length;
+  if (remaining > 0) return;
+
+  // All missions are gone — show the empty state
+  missionsEl.innerHTML = `
+    <div class="missions-empty-state">
+      <div class="empty-checkmark">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+        </svg>
+      </div>
+      <div class="empty-title">Inbox zero, but for tabs.</div>
+      <div class="empty-subtitle">You're free.</div>
+    </div>
+  `;
+
+  // Update the section count to reflect the clear state
+  const countEl = document.getElementById('openTabsSectionCount');
+  if (countEl) countEl.textContent = '0 missions';
 }
 
 /**
@@ -545,6 +693,44 @@ function renderScatterBar(tabCount, domainCount) {
 }
 
 
+/**
+ * renderPersonalMessage(message)
+ *
+ * Renders the AI's witty one-liner above the mission cards in the AI view.
+ * This looks like a handwritten note or a quote — italic text with a warm
+ * left border, referencing the actual tabs the user has open.
+ *
+ * The element it writes into (#aiPersonalMessage) is injected into the
+ * section header area just above the missions grid. If the element doesn't
+ * exist yet in the DOM, we create it and insert it there.
+ *
+ * If message is null or empty, we hide the element gracefully.
+ */
+function renderPersonalMessage(message) {
+  // Find or create the personal message element.
+  // We insert it right before the #openTabsMissions grid.
+  let el = document.getElementById('aiPersonalMessage');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'aiPersonalMessage';
+    // Insert before the missions grid
+    const missionsEl = document.getElementById('openTabsMissions');
+    if (missionsEl && missionsEl.parentNode) {
+      missionsEl.parentNode.insertBefore(el, missionsEl);
+    }
+  }
+
+  if (message) {
+    el.className = 'ai-personal-message';
+    // Use a left-open quotation mark as a decorative element, then the message text
+    el.innerHTML = `<span class="ai-personal-message-quote">&ldquo;</span>${message}`;
+    el.style.display = '';
+  } else {
+    el.style.display = 'none';
+  }
+}
+
+
 /* ----------------------------------------------------------------
    IN-MEMORY STORE FOR OPEN-TAB MISSIONS
 
@@ -558,6 +744,7 @@ function renderScatterBar(tabCount, domainCount) {
 let openTabMissions = [];
 let duplicateTabs   = [];
 let domainGroups    = []; // domain-grouped tabs for the static view
+let currentPersonalMessage = null; // the AI's witty one-liner about the current tab set
 
 // Tracks whether we're currently showing the AI view or the static view
 let isAIView = false;
@@ -739,9 +926,13 @@ async function renderStaticDashboard() {
       if (cacheRes.ok) {
         const cacheData = await cacheRes.json();
         if (cacheData.cached && cacheData.missions && cacheData.missions.length > 0) {
-          // We already have AI results for these exact tabs — go straight to AI view
+          // We already have AI results for these exact tabs — go straight to AI view.
+          // Pass personalMessage through so the quote is shown even on cache hit.
           console.log('[TMC] Cache hit on load — showing AI view immediately');
-          await renderAIDashboard({ cachedMissions: cacheData.missions });
+          await renderAIDashboard({
+            cachedMissions: cacheData.missions,
+            personalMessage: cacheData.personalMessage || null,
+          });
           return;
         }
       }
@@ -829,8 +1020,7 @@ async function renderStaticDashboard() {
     console.warn('[TMC] Could not fetch stats:', err);
   }
 
-  // ── Step 7: Scatter bar (based on domain group count) ────────────────────
-  renderScatterBar(realTabs.length, domainGroups.length);
+  // ── Step 7: Footer stats (scatter bar removed) ───────────────────────────
 
   // ── Step 8: Footer stats ─────────────────────────────────────────────────
   const statMissions = document.getElementById('statMissions');
@@ -885,8 +1075,9 @@ async function renderAIDashboard(options = {}) {
     aiBtn.classList.add('loading');
   }
 
-  openTabMissions = []; // reset in-memory store
-  duplicateTabs   = [];
+  openTabMissions        = []; // reset in-memory store
+  duplicateTabs          = [];
+  currentPersonalMessage = null;
 
   // ── Fetch or reuse missions ───────────────────────────────────────────────
   if (options.cachedMissions) {
@@ -895,6 +1086,8 @@ async function renderAIDashboard(options = {}) {
       ...m,
       _stableId: m.name.toLowerCase().replace(/[^a-z0-9]/g, '-').slice(0, 40) || `mission-${i}`,
     }));
+    // Cache hit also passes personalMessage if the server had it cached
+    currentPersonalMessage = options.personalMessage || null;
   } else if (extensionAvailable && realTabs.length > 0) {
     // Call DeepSeek via our server
     try {
@@ -910,7 +1103,8 @@ async function renderAIDashboard(options = {}) {
           ...m,
           _stableId: m.name.toLowerCase().replace(/[^a-z0-9]/g, '-').slice(0, 40) || `mission-${i}`,
         }));
-        duplicateTabs = clusterData.duplicates || [];
+        duplicateTabs          = clusterData.duplicates || [];
+        currentPersonalMessage = clusterData.personalMessage || null;
       }
     } catch (err) {
       console.warn('[TMC] Could not cluster open tabs:', err);
@@ -939,19 +1133,16 @@ async function renderAIDashboard(options = {}) {
     openTabsSection.style.display = 'none';
   }
 
+  // ── Render the personal message above the mission cards ───────────────────
+  // This is the AI's witty one-liner based on the tab contents.
+  // We inject it into a dedicated element that sits just above the missions grid.
+  // If there's no message (e.g. an older cache entry), we hide it gracefully.
+  renderPersonalMessage(currentPersonalMessage);
+
   // ── Hide static-only UI elements ─────────────────────────────────────────
   if (aiBar) aiBar.style.display = 'none';
   const topSitesSection = document.getElementById('topSitesSection');
   if (topSitesSection) topSitesSection.style.display = 'none';
-
-  // ── Scatter bar (based on AI mission count) ───────────────────────────────
-  // Count unique domains across AI missions
-  const aiDomains = new Set();
-  openTabMissions.forEach(m => (m.tabs || []).forEach(t => {
-    try { aiDomains.add(new URL(t.url).hostname); } catch {}
-  }));
-  const aiTabCount = openTabMissions.reduce((s, m) => s + (m.tabs || []).length, 0);
-  renderScatterBar(aiTabCount, aiDomains.size);
 
   // ── Stale tabs ─────────────────────────────────────────────────────────────
   const clusteredTabUrls = new Set(

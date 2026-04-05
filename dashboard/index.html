@@ -15,8 +15,8 @@
 <div class="container">
 
   <!-- ================================================================
-       HEADER — greeting on the left, scatter meter on the right
-       Both sides are empty placeholders; app.js fills them in.
+       HEADER — greeting on the left
+       The scatter meter has been removed. Only the greeting and date remain.
        ================================================================ -->
   <header>
     <div class="header-left">
@@ -24,15 +24,6 @@
       <h1 id="greeting"></h1>
       <!-- "Friday, April 4, 2026" — written by getDateDisplay() in app.js -->
       <div class="date" id="dateDisplay"></div>
-    </div>
-
-    <!-- Scatter meter: 10 dots that fill up based on how many missions are active -->
-    <div class="scatter-meter">
-      <div class="scatter-label">Focus level</div>
-      <!-- app.js calls renderScatterBar() to fill in the dots -->
-      <div class="scatter-bar" id="scatterBar"></div>
-      <!-- e.g. "4 parallel missions — moderate scatter" -->
-      <div class="scatter-caption" id="scatterCaption"></div>
     </div>
   </header>
 
