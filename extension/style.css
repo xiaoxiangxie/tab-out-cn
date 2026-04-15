@@ -353,18 +353,33 @@ header {
   position: absolute;
   top: calc(100% + 8px);
   right: 0;
-  background: var(--card-bg);
-  border: var(--border);
+  background: var(--paper);
+  border: 1px solid var(--warm-gray);
   border-radius: var(--radius-lg);
   padding: 8px;
   min-width: 180px;
-  box-shadow: var(--shadow-lg);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
   opacity: 0;
   visibility: hidden;
   transform: translateY(-8px);
   transition: all var(--transition-fast);
   z-index: 1000;
-  backdrop-filter: blur(var(--blur));
+}
+
+/* Override glass theme backdrop for dropdown - needs solid bg for readability */
+[data-theme="glass"] .theme-dropdown {
+  background: #2d2d44;
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+[data-theme="cyber"] .theme-dropdown {
+  background: #12121a;
+  border-color: #00fff9;
+}
+
+[data-theme="retro"] .theme-dropdown {
+  background: #240f3d;
+  border-color: #ff6b9d;
 }
 
 .theme-dropdown.open {
@@ -390,24 +405,53 @@ header {
 }
 
 .theme-option:hover {
-  background: var(--badge-bg);
+  background: rgba(0, 0, 0, 0.06);
 }
 
 .theme-option.active {
-  background: var(--badge-bg);
+  background: rgba(0, 0, 0, 0.08);
   color: var(--accent);
+  font-weight: 500;
+}
+
+/* Ensure text is visible in all themes */
+[data-theme="glass"] .theme-option,
+[data-theme="cyber"] .theme-option,
+[data-theme="retro"] .theme-option {
+  color: #ffffff;
+}
+
+[data-theme="glass"] .theme-option:hover,
+[data-theme="cyber"] .theme-option:hover,
+[data-theme="retro"] .theme-option:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="glass"] .theme-option.active,
+[data-theme="cyber"] .theme-option.active,
+[data-theme="retro"] .theme-option.active {
+  color: #64b5f6;
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .theme-option .theme-preview {
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  border: 2px solid var(--warm-gray);
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  flex-shrink: 0;
 }
 
 .theme-option.active .theme-preview {
   border-color: var(--accent);
-  box-shadow: var(--glow);
+  box-shadow: 0 0 6px var(--accent);
+}
+
+/* Ensure preview dots are visible in dark themes */
+[data-theme="glass"] .theme-option .theme-preview,
+[data-theme="cyber"] .theme-option .theme-preview,
+[data-theme="retro"] .theme-option .theme-preview {
+  border-color: rgba(255, 255, 255, 0.3);
 }
 
 /* ============================================================
