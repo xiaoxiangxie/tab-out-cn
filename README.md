@@ -42,6 +42,8 @@ https://github.com/xiaoxiangxie/tab-out-cn
 
 右上角点击调色盘图标即可切换主题：
 
+![主题预览](images/glass.jpg)
+
 | 主题 | 风格描述 |
 |------|----------|
 | **跟随系统** | 根据系统设置自动切换深色/浅色模式 |
