@@ -777,6 +777,839 @@
 }
 
 /* ============================================================
+   THEME: PLANNER / 手帐风
+   Warm cream, pastel accents, paper texture, notebook aesthetic
+   ============================================================ */
+[data-theme="planner"] {
+  /* Palette — warm cream + soft pastels */
+  --ink: #4a3728;
+  --paper: #faf6f0;
+  --warm-gray: #e8ddd4;
+  --muted: #a89080;
+  --accent: #e07a5f;
+  --accent-sage: #81b29a;
+  --accent-slate: #89c2d9;
+  --accent-rose: #e8a0bf;
+  --status-active: #81b29a;
+  --status-cooling: #f2cc8f;
+  --status-abandoned: #e8a0bf;
+  --card-bg: #ffffff;
+  --shadow: rgba(74, 55, 40, 0.06);
+  --shadow-lg: rgba(74, 55, 40, 0.12);
+  --border-width: 1px;
+  --border-style: dashed;
+  --border: var(--border-width) var(--border-style) #d4c4b0;
+  --radius: 16px;
+  --radius-sm: 8px;
+  --radius-lg: 20px;
+
+  /* Paper texture + warm gradient */
+  --bg-texture: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.04' numOctaves='5' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  --bg-gradient: linear-gradient(180deg, #fdf9f4 0%, #faf6f0 40%, #f5ede4 100%);
+
+  /* Component-specific */
+  --chip-bg: rgba(224, 122, 95, 0.05);
+  --chip-border: rgba(224, 122, 95, 0.12);
+  --badge-bg: rgba(224, 122, 95, 0.08);
+  --banner-bg: rgba(129, 178, 154, 0.08);
+  --banner-border: rgba(129, 178, 154, 0.2);
+
+  /* Typography */
+  --font-display: 'Crimson Pro', 'Georgia', serif;
+  --font-body: 'Nunito', 'Comic Sans MS', cursive, sans-serif;
+
+  /* Effects */
+  --glow: none;
+  --blur: 0px;
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.25s ease;
+  --transition-slow: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Planner body texture layer */
+[data-theme="planner"] body::before {
+  background-image:
+    radial-gradient(circle at 20% 80%, rgba(232, 160, 191, 0.12) 0%, transparent 40%),
+    radial-gradient(circle at 80% 20%, rgba(129, 194, 215, 0.1) 0%, transparent 40%),
+    radial-gradient(circle at 50% 50%, rgba(242, 204, 143, 0.08) 0%, transparent 50%),
+    var(--bg-texture),
+    var(--bg-gradient);
+}
+
+/* Planner container */
+[data-theme="planner"] .container {
+  position: relative;
+  z-index: 1;
+}
+
+/* Planner header — soft ribbon feel */
+[data-theme="planner"] header {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 2px dashed #d4c4b0;
+  border-radius: 0 0 20px 20px;
+  padding: 24px 28px;
+  margin-bottom: 40px;
+  box-shadow: 0 4px 20px rgba(74, 55, 40, 0.06);
+}
+
+[data-theme="planner"] .header-left h1 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 30px;
+  color: var(--ink);
+  letter-spacing: -0.5px;
+  background: none;
+  -webkit-text-fill-color: var(--ink);
+}
+
+[data-theme="planner"] .header-left .date {
+  color: var(--muted);
+  font-family: var(--font-body);
+  font-weight: 500;
+}
+
+/* Planner theme button */
+[data-theme="planner"] .theme-btn {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px dashed var(--warm-gray);
+  border-radius: 12px;
+}
+
+[data-theme="planner"] .theme-btn:hover {
+  border-color: var(--accent);
+  background: rgba(255, 255, 255, 0.95);
+}
+
+/* Planner mission card — sticky note / card aesthetic */
+[data-theme="planner"] .mission-card {
+  background: #ffffff;
+  border: 1px dashed #d4c4b0;
+  border-radius: 16px;
+  box-shadow: 0 3px 12px rgba(74, 55, 40, 0.08), 0 1px 3px rgba(74, 55, 40, 0.04);
+  position: relative;
+  overflow: hidden;
+}
+
+[data-theme="planner"] .mission-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #e07a5f, #f2cc8f, #81b29a, #89c2d9);
+  border-radius: 16px 16px 0 0;
+}
+
+[data-theme="planner"] .mission-card.has-active-bar::before { background: linear-gradient(90deg, #81b29a, #a8d5ba); }
+[data-theme="planner"] .mission-card.has-amber-bar::before { background: linear-gradient(90deg, #e07a5f, #f2cc8f); }
+[data-theme="planner"] .mission-card.has-neutral-bar::before { background: var(--warm-gray); }
+
+[data-theme="planner"] .mission-card:hover {
+  box-shadow: 0 8px 24px rgba(74, 55, 40, 0.12), 0 2px 6px rgba(74, 55, 40, 0.06);
+  transform: translateY(-3px) rotate(-0.3deg);
+  border-color: var(--accent);
+}
+
+/* Planner mission name */
+[data-theme="planner"] .mission-name {
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 15px;
+}
+
+/* Planner tags */
+[data-theme="planner"] .mission-tag.active {
+  color: #ffffff;
+  background: var(--accent-sage);
+  border-radius: 20px;
+  padding: 2px 10px;
+  box-shadow: none;
+}
+
+[data-theme="planner"] .mission-tag.cooling {
+  color: #ffffff;
+  background: var(--status-cooling);
+  border-radius: 20px;
+  padding: 2px 10px;
+}
+
+[data-theme="planner"] .mission-tag.abandoned {
+  color: #ffffff;
+  background: var(--accent-rose);
+  border-radius: 20px;
+  padding: 2px 10px;
+}
+
+/* Planner open tabs badge */
+[data-theme="planner"] .open-tabs-badge {
+  background: rgba(224, 122, 95, 0.1);
+  color: var(--accent);
+  border-radius: 20px;
+  padding: 2px 10px;
+  font-family: var(--font-body);
+  font-weight: 600;
+}
+
+/* Planner chip (tab row) */
+[data-theme="planner"] .page-chip {
+  border-bottom: 1px dotted var(--warm-gray);
+  border-radius: 0;
+  padding: 10px 6px;
+  font-family: var(--font-body);
+  color: var(--ink);
+}
+
+[data-theme="planner"] .page-chip:last-child {
+  border-bottom: none;
+}
+
+/* Planner chip actions */
+[data-theme="planner"] .chip-action:hover {
+  background: rgba(224, 122, 95, 0.08);
+  border-radius: 8px;
+}
+
+[data-theme="planner"] .chip-save:hover {
+  color: var(--accent-sage);
+  background: rgba(129, 178, 154, 0.1);
+}
+
+[data-theme="planner"] .chip-close:hover {
+  color: var(--accent-rose);
+  background: rgba(232, 160, 191, 0.1);
+}
+
+/* Planner section header */
+[data-theme="planner"] .section-header h2 {
+  font-family: var(--font-display);
+  font-style: italic;
+  color: var(--muted);
+  font-weight: 400;
+}
+
+/* Planner action buttons */
+[data-theme="planner"] .action-btn {
+  font-family: var(--font-body);
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px dashed var(--warm-gray);
+  border-radius: 20px;
+  color: var(--ink);
+  font-size: 12px;
+  padding: 6px 14px;
+  font-weight: 600;
+}
+
+[data-theme="planner"] .action-btn:hover {
+  border-style: solid;
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(224, 122, 95, 0.06);
+}
+
+[data-theme="planner"] .action-btn.close-tabs {
+  border-color: rgba(224, 122, 95, 0.4);
+  color: var(--accent);
+  background: rgba(224, 122, 95, 0.06);
+}
+
+[data-theme="planner"] .action-btn.close-tabs:hover {
+  background: rgba(224, 122, 95, 0.12);
+}
+
+[data-theme="planner"] .action-btn.save-tabs {
+  border-color: rgba(129, 178, 154, 0.4);
+  color: var(--accent-sage);
+  background: rgba(129, 178, 154, 0.06);
+}
+
+[data-theme="planner"] .action-btn.save-tabs:hover {
+  background: rgba(129, 178, 154, 0.12);
+}
+
+/* Planner tab cleanup banner */
+[data-theme="planner"] .tab-cleanup-banner {
+  background: rgba(129, 178, 154, 0.1);
+  border: 1px dashed var(--accent-sage);
+  border-radius: 16px;
+}
+
+[data-theme="planner"] .tab-cleanup-btn {
+  background: var(--accent-sage);
+  border-radius: 20px;
+  border: none;
+  color: white;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 12px;
+  padding: 8px 18px;
+}
+
+[data-theme="planner"] .tab-cleanup-btn:hover {
+  opacity: 0.85;
+}
+
+/* Planner checkbox */
+[data-theme="planner"] .deferred-checkbox {
+  border-radius: 6px;
+  border: 2px solid var(--warm-gray);
+}
+
+[data-theme="planner"] .deferred-checkbox:checked {
+  background: var(--accent-sage);
+  border-color: var(--accent-sage);
+  box-shadow: 0 0 0 3px rgba(129, 178, 154, 0.2);
+}
+
+[data-theme="planner"] .deferred-checkbox:checked::after {
+  border-color: white;
+  border-width: 0 2px 2px 0;
+}
+
+/* Planner footer */
+[data-theme="planner"] footer {
+  border-top: 2px dashed var(--warm-gray);
+  border-radius: 20px 20px 0 0;
+}
+
+[data-theme="planner"] .stat-num {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 32px;
+  color: var(--accent);
+}
+
+[data-theme="planner"] .stat-label {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 1px;
+}
+
+[data-theme="planner"] .last-refresh {
+  font-family: var(--font-body);
+  font-size: 11px;
+  color: var(--muted);
+}
+
+[data-theme="planner"] .last-refresh a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+[data-theme="planner"] .last-refresh a:hover {
+  text-decoration: underline;
+}
+
+/* Planner toast */
+[data-theme="planner"] .toast {
+  background: #ffffff;
+  border: 1px dashed var(--accent-sage);
+  border-radius: 16px;
+  color: var(--ink);
+  font-family: var(--font-body);
+  box-shadow: 0 4px 20px rgba(74, 55, 40, 0.12);
+}
+
+/* Planner empty state */
+[data-theme="planner"] .empty-checkmark {
+  background: rgba(129, 178, 154, 0.1);
+  border: 2px solid rgba(129, 178, 154, 0.3);
+  border-radius: 50%;
+}
+
+[data-theme="planner"] .empty-checkmark svg {
+  color: var(--accent-sage);
+}
+
+[data-theme="planner"] .empty-title {
+  font-family: var(--font-display);
+  color: var(--ink);
+  font-style: italic;
+}
+
+/* Planner archive */
+[data-theme="planner"] .archive-toggle {
+  font-family: var(--font-body);
+  color: var(--muted);
+  font-weight: 600;
+}
+
+[data-theme="planner"] .archive-search {
+  border: 1px dashed var(--warm-gray);
+  border-radius: 12px;
+  background: #ffffff;
+  font-family: var(--font-body);
+  color: var(--ink);
+}
+
+[data-theme="planner"] .archive-search:focus {
+  border-color: var(--accent);
+  border-style: solid;
+  box-shadow: 0 0 0 3px rgba(224, 122, 95, 0.1);
+}
+
+/* Planner animations */
+[data-theme="planner"] .mission-card {
+  transition: all 0.3s cubic-bezier(0.34, 1.2, 0.64, 1);
+}
+
+[data-theme="planner"] header,
+[data-theme="planner"] .tab-cleanup-banner {
+  animation: fadeUp 0.5s ease both;
+}
+
+/* ============================================================
+   THEME: HELLO KITTY 日本风
+   Soft pink, red bows, cherry blossoms, kawaii but refined
+   ============================================================ */
+[data-theme="hellokitty"] {
+  /* Palette — pink + red + white */
+  --ink: #5c2a3a;
+  --paper: #fff5f7;
+  --warm-gray: #f0d4dc;
+  --muted: #b88090;
+  --accent: #e63950;
+  --accent-sage: #f4a7b9;
+  --accent-slate: #ffb3c6;
+  --accent-rose: #e63950;
+  --status-active: #81b29a;
+  --status-cooling: #f2cc8f;
+  --status-abandoned: #e63950;
+  --card-bg: #ffffff;
+  --shadow: rgba(92, 42, 58, 0.08);
+  --shadow-lg: rgba(92, 42, 58, 0.14);
+  --border-width: 1.5px;
+  --border-style: solid;
+  --border: var(--border-width) var(--border-style) var(--warm-gray);
+  --radius: 20px;
+  --radius-sm: 10px;
+  --radius-lg: 28px;
+
+  /* Soft gradient */
+  --bg-texture: none;
+  --bg-gradient:
+    radial-gradient(ellipse 100% 80% at 10% 0%, rgba(255, 182, 193, 0.35) 0%, transparent 55%),
+    radial-gradient(ellipse 80% 60% at 90% 10%, rgba(255, 192, 203, 0.25) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 50% at 50% 100%, rgba(230, 57, 80, 0.08) 0%, transparent 50%),
+    linear-gradient(180deg, #fff5f7 0%, #ffe4ec 100%);
+
+  /* Component-specific */
+  --chip-bg: rgba(230, 57, 80, 0.04);
+  --chip-border: rgba(230, 57, 80, 0.1);
+  --badge-bg: rgba(230, 57, 80, 0.08);
+  --banner-bg: rgba(255, 182, 193, 0.15);
+  --banner-border: rgba(230, 57, 80, 0.2);
+
+  /* Typography */
+  --font-display: 'Quicksand', 'Arial Rounded MT Bold', sans-serif;
+  --font-body: 'Quicksand', 'Arial Rounded MT Bold', sans-serif;
+
+  /* Effects */
+  --glow: none;
+  --blur: 0px;
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.25s ease;
+  --transition-slow: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Hello Kitty body texture */
+[data-theme="hellokitty"] body::before {
+  background-image: var(--bg-gradient);
+}
+
+/* Cherry blossom petals floating decoration */
+[data-theme="hellokitty"] body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 12px 12px at 15% 20%, rgba(255, 182, 193, 0.5) 0%, transparent 100%),
+    radial-gradient(ellipse 8px 8px at 75% 15%, rgba(255, 192, 203, 0.4) 0%, transparent 100%),
+    radial-gradient(ellipse 10px 10px at 85% 60%, rgba(255, 182, 193, 0.45) 0%, transparent 100%),
+    radial-gradient(ellipse 7px 7px at 30% 75%, rgba(255, 192, 203, 0.35) 0%, transparent 100%),
+    radial-gradient(ellipse 9px 9px at 55% 85%, rgba(255, 182, 193, 0.4) 0%, transparent 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Hello Kitty header — ribbon banner feel */
+[data-theme="hellokitty"] header {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 2px solid var(--warm-gray);
+  border-top: none;
+  border-radius: 0 0 28px 28px;
+  padding: 24px 28px;
+  margin-bottom: 40px;
+  box-shadow: 0 8px 32px rgba(230, 57, 80, 0.08);
+  position: relative;
+}
+
+[data-theme="hellokitty"] .header-left h1 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 28px;
+  color: var(--ink);
+  letter-spacing: 0.5px;
+  background: none;
+  -webkit-text-fill-color: var(--ink);
+}
+
+[data-theme="hellokitty"] .header-left .date {
+  color: var(--muted);
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+/* Hello Kitty theme button — bow shaped feel */
+[data-theme="hellokitty"] .theme-btn {
+  background: rgba(255, 255, 255, 0.9);
+  border: 2px solid var(--accent-rose);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+}
+
+[data-theme="hellokitty"] .theme-btn:hover {
+  background: rgba(230, 57, 80, 0.08);
+  border-color: var(--accent);
+  transform: scale(1.1) rotate(5deg);
+}
+
+[data-theme="hellokitty"] .theme-btn svg {
+  color: var(--accent);
+}
+
+/* Hello Kitty mission card */
+[data-theme="hellokitty"] .mission-card {
+  background: rgba(255, 255, 255, 0.92);
+  border: 2px solid var(--warm-gray);
+  border-radius: 24px;
+  box-shadow: 0 4px 20px rgba(230, 57, 80, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+[data-theme="hellokitty"] .mission-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #e63950, #ff6b81, #f4a7b9, #ffb3c6);
+  border-radius: 24px 24px 0 0;
+}
+
+[data-theme="hellokitty"] .mission-card.has-active-bar::before {
+  background: linear-gradient(90deg, #81b29a, #a8d5ba, #c8e6c9);
+}
+
+[data-theme="hellokitty"] .mission-card.has-amber-bar::before {
+  background: linear-gradient(90deg, #e63950, #ff6b81);
+}
+
+[data-theme="hellokitty"] .mission-card.has-neutral-bar::before {
+  background: linear-gradient(90deg, #f0d4dc, #ffb3c6);
+}
+
+[data-theme="hellokitty"] .mission-card:hover {
+  box-shadow: 0 12px 36px rgba(230, 57, 80, 0.15);
+  transform: translateY(-4px);
+  border-color: var(--accent-rose);
+}
+
+/* Hello Kitty mission name */
+[data-theme="hellokitty"] .mission-name {
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.3px;
+}
+
+/* Hello Kitty tags — pill style */
+[data-theme="hellokitty"] .mission-tag.active {
+  color: #ffffff;
+  background: linear-gradient(135deg, #e63950, #ff6b81);
+  border-radius: 20px;
+  padding: 2px 10px;
+  font-weight: 700;
+  font-size: 10px;
+  box-shadow: 0 2px 8px rgba(230, 57, 80, 0.3);
+}
+
+[data-theme="hellokitty"] .mission-tag.cooling {
+  color: #ffffff;
+  background: linear-gradient(135deg, #f2cc8f, #ffd700);
+  border-radius: 20px;
+  padding: 2px 10px;
+  font-weight: 700;
+  font-size: 10px;
+}
+
+[data-theme="hellokitty"] .mission-tag.abandoned {
+  color: #ffffff;
+  background: linear-gradient(135deg, #e63950, #ff6b81);
+  border-radius: 20px;
+  padding: 2px 10px;
+  font-weight: 700;
+  font-size: 10px;
+}
+
+/* Hello Kitty open tabs badge */
+[data-theme="hellokitty"] .open-tabs-badge {
+  background: rgba(230, 57, 80, 0.1);
+  color: var(--accent);
+  border-radius: 20px;
+  padding: 3px 10px;
+  font-weight: 700;
+  font-size: 10px;
+  border: 1px solid rgba(230, 57, 80, 0.15);
+}
+
+/* Hello Kitty chip */
+[data-theme="hellokitty"] .page-chip {
+  border-bottom: 1.5px solid rgba(240, 212, 220, 0.6);
+  border-radius: 0;
+  padding: 10px 6px;
+  color: var(--ink);
+  font-weight: 500;
+}
+
+[data-theme="hellokitty"] .page-chip:hover {
+  background: rgba(255, 182, 193, 0.1);
+  border-radius: 12px;
+}
+
+[data-theme="hellokitty"] .page-chip:last-child {
+  border-bottom: none;
+}
+
+/* Hello Kitty chip actions */
+[data-theme="hellokitty"] .chip-action:hover {
+  background: rgba(230, 57, 80, 0.08);
+  border-radius: 50%;
+}
+
+[data-theme="hellokitty"] .chip-save:hover {
+  color: var(--accent-sage);
+  background: rgba(244, 167, 185, 0.15);
+}
+
+[data-theme="hellokitty"] .chip-close:hover {
+  color: var(--accent);
+  background: rgba(230, 57, 80, 0.08);
+}
+
+/* Hello Kitty section header */
+[data-theme="hellokitty"] .section-header h2 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-style: normal;
+  color: var(--muted);
+  letter-spacing: 1px;
+  font-size: 16px;
+}
+
+/* Hello Kitty action buttons — pill style */
+[data-theme="hellokitty"] .action-btn {
+  font-family: var(--font-display);
+  background: rgba(255, 255, 255, 0.95);
+  border: 1.5px solid var(--warm-gray);
+  border-radius: 20px;
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 7px 16px;
+  letter-spacing: 0.3px;
+}
+
+[data-theme="hellokitty"] .action-btn:hover {
+  border-color: var(--accent-rose);
+  color: var(--accent);
+  background: rgba(255, 182, 193, 0.1);
+  transform: translateY(-1px);
+}
+
+[data-theme="hellokitty"] .action-btn.close-tabs {
+  background: linear-gradient(135deg, rgba(230, 57, 80, 0.1), rgba(255, 107, 129, 0.08));
+  border-color: rgba(230, 57, 80, 0.3);
+  color: var(--accent);
+}
+
+[data-theme="hellokitty"] .action-btn.close-tabs:hover {
+  background: linear-gradient(135deg, rgba(230, 57, 80, 0.15), rgba(255, 107, 129, 0.12));
+}
+
+[data-theme="hellokitty"] .action-btn.save-tabs {
+  background: linear-gradient(135deg, rgba(244, 167, 185, 0.15), rgba(255, 179, 198, 0.1));
+  border-color: rgba(244, 167, 185, 0.4);
+  color: var(--ink);
+}
+
+[data-theme="hellokitty"] .action-btn.save-tabs:hover {
+  background: linear-gradient(135deg, rgba(244, 167, 185, 0.2), rgba(255, 179, 198, 0.15));
+}
+
+/* Hello Kitty tab cleanup banner */
+[data-theme="hellokitty"] .tab-cleanup-banner {
+  background: rgba(255, 182, 193, 0.2);
+  border: 2px solid rgba(230, 57, 80, 0.2);
+  border-radius: 20px;
+  backdrop-filter: blur(12px);
+}
+
+[data-theme="hellokitty"] .tab-cleanup-btn {
+  background: linear-gradient(135deg, #e63950, #ff6b81);
+  border-radius: 20px;
+  border: none;
+  color: white;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 12px;
+  padding: 8px 18px;
+  box-shadow: 0 4px 12px rgba(230, 57, 80, 0.3);
+}
+
+[data-theme="hellokitty"] .tab-cleanup-btn:hover {
+  box-shadow: 0 6px 16px rgba(230, 57, 80, 0.4);
+  transform: translateY(-1px);
+}
+
+/* Hello Kitty checkbox */
+[data-theme="hellokitty"] .deferred-checkbox {
+  border-radius: 8px;
+  border: 2px solid var(--warm-gray);
+}
+
+[data-theme="hellokitty"] .deferred-checkbox:checked {
+  background: linear-gradient(135deg, #e63950, #ff6b81);
+  border-color: #e63950;
+  box-shadow: 0 0 0 3px rgba(230, 57, 80, 0.15);
+}
+
+[data-theme="hellokitty"] .deferred-checkbox:checked::after {
+  border-color: white;
+}
+
+/* Hello Kitty footer */
+[data-theme="hellokitty"] footer {
+  border-top: 2px solid var(--warm-gray);
+  border-radius: 20px 20px 0 0;
+  background: rgba(255, 255, 255, 0.6);
+}
+
+[data-theme="hellokitty"] .stat-num {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 30px;
+  background: linear-gradient(135deg, #e63950, #ff6b81);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+[data-theme="hellokitty"] .stat-label {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 1px;
+}
+
+[data-theme="hellokitty"] .last-refresh {
+  font-family: var(--font-display);
+  font-size: 11px;
+  color: var(--muted);
+}
+
+[data-theme="hellokitty"] .last-refresh a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+[data-theme="hellokitty"] .last-refresh a:hover {
+  text-decoration: underline;
+}
+
+/* Hello Kitty toast */
+[data-theme="hellokitty"] .toast {
+  background: rgba(255, 255, 255, 0.95);
+  border: 2px solid var(--warm-gray);
+  border-radius: 20px;
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-weight: 600;
+  box-shadow: 0 8px 32px rgba(230, 57, 80, 0.15);
+}
+
+[data-theme="hellokitty"] .toast svg {
+  color: var(--accent);
+}
+
+/* Hello Kitty empty state */
+[data-theme="hellokitty"] .empty-checkmark {
+  background: rgba(255, 182, 193, 0.15);
+  border: 2px solid rgba(230, 57, 80, 0.25);
+  border-radius: 50%;
+  box-shadow: 0 0 0 10px rgba(255, 182, 193, 0.08);
+}
+
+[data-theme="hellokitty"] .empty-checkmark svg {
+  color: var(--accent);
+}
+
+[data-theme="hellokitty"] .empty-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--ink);
+}
+
+/* Hello Kitty archive */
+[data-theme="hellokitty"] .archive-toggle {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--muted);
+}
+
+[data-theme="hellokitty"] .archive-search {
+  border: 1.5px solid var(--warm-gray);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.9);
+  font-family: var(--font-display);
+  color: var(--ink);
+}
+
+[data-theme="hellokitty"] .archive-search:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(230, 57, 80, 0.1);
+}
+
+/* Hello Kitty animations */
+[data-theme="hellokitty"] .mission-card {
+  transition: all 0.35s cubic-bezier(0.34, 1.3, 0.64, 1);
+}
+
+[data-theme="hellokitty"] .action-btn,
+[data-theme="hellokitty"] .chip-action {
+  transition: all 0.2s cubic-bezier(0.34, 1.2, 0.64, 1);
+}
+
+[data-theme="hellokitty"] header,
+[data-theme="hellokitty"] .tab-cleanup-banner {
+  animation: fadeUp 0.5s ease both;
+}
+
+/* ============================================================
    AUTO THEME: Follow system preference (default dark)
    ============================================================ */
 @media (prefers-color-scheme: dark) {
