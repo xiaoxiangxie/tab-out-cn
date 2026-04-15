@@ -1,16 +1,20 @@
 /* ============================================================
-   Tab Mission Control — Dashboard Styles
-   Extracted directly from mockup.html — do not modify unless
-   also updating the mockup. This is the approved design.
+   Tab Out — Multi-Theme Dashboard Styles
+   Systematically designed with CSS variables for consistent theming
    ============================================================ */
 
-/* ---- Theme: Light (default) ---- */
+/* ============================================================
+   BASE THEME SYSTEM
+   All themes inherit from :root and override these variables
+   ============================================================ */
+
 :root {
+  /* ---- Color Palette ---- */
   --ink: #1a1613;
   --paper: #f8f5f0;
   --warm-gray: #e8e2da;
   --muted: #9a918a;
-  --accent-amber: #c8713a;
+  --accent: #c8713a;
   --accent-sage: #5a7a62;
   --accent-slate: #5a6b7a;
   --accent-rose: #b35a5a;
@@ -18,34 +22,207 @@
   --status-cooling: #b8892e;
   --status-abandoned: #b35a5a;
   --card-bg: #fffdf9;
+
+  /* ---- Typography ---- */
+  --font-display: 'Newsreader', serif;
+  --font-body: 'DM Sans', sans-serif;
+
+  /* ---- Effects ---- */
   --shadow: rgba(26, 22, 19, 0.06);
+  --shadow-lg: rgba(26, 22, 19, 0.12);
+  --glow: none;
+  --blur: 0px;
+  --border-width: 1px;
+  --border-style: solid;
+  --border: var(--border-width) var(--border-style) var(--warm-gray);
+  --radius: 8px;
+  --radius-sm: 4px;
+  --radius-lg: 12px;
+
+  /* ---- Background Effects ---- */
+  --bg-texture: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  --bg-gradient: none;
+
+  /* ---- Animation ---- */
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.25s ease;
+  --transition-slow: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* ---- Component-specific ---- */
+  --chip-bg: transparent;
+  --chip-border: rgba(154, 145, 138, 0.1);
+  --badge-bg: rgba(200, 113, 58, 0.08);
+  --banner-bg: linear-gradient(135deg, rgba(200, 113, 58, 0.04), rgba(200, 113, 58, 0.09));
+  --banner-border: rgba(200, 113, 58, 0.18);
 }
 
-/* ---- Theme: Dark ---- */
-[data-theme="dark"] {
-  --ink: #f8f5f0;
-  --paper: #1a1613;
-  --warm-gray: #2d2825;
-  --muted: #7a716a;
-  --accent-amber: #e8956a;
-  --accent-sage: #7a9a82;
-  --accent-slate: #7a8b9a;
-  --accent-rose: #c27a7a;
-  --status-active: #6a9a6a;
-  --status-cooling: #d8a94e;
-  --status-abandoned: #c27a7a;
-  --card-bg: #241f1c;
-  --shadow: rgba(0, 0, 0, 0.3);
+/* ============================================================
+   THEME: MINIMALIST (极简主义)
+   Clean, lots of white space, thin borders, restrained
+   ============================================================ */
+[data-theme="minimal"] {
+  --ink: #1a1a1a;
+  --paper: #fafafa;
+  --warm-gray: #e5e5e5;
+  --muted: #888888;
+  --accent: #333333;
+  --accent-sage: #4a4a4a;
+  --accent-slate: #555555;
+  --accent-rose: #666666;
+  --status-active: #2a2a2a;
+  --status-cooling: #777777;
+  --status-abandoned: #888888;
+  --card-bg: #ffffff;
+  --shadow: rgba(0, 0, 0, 0.04);
+  --shadow-lg: rgba(0, 0, 0, 0.08);
+  --border-width: 1px;
+  --border-style: solid;
+  --border: var(--border-width) var(--border-style) var(--warm-gray);
+  --radius: 4px;
+  --radius-sm: 2px;
+  --radius-lg: 6px;
+  --bg-texture: none;
+  --badge-bg: rgba(0, 0, 0, 0.04);
 }
 
-/* ---- Auto follow system preference ---- */
+/* ============================================================
+   THEME: CYBERPUNK (赛博朋克)
+   Neon colors, dark bg, glow effects, tech aesthetic
+   ============================================================ */
+[data-theme="cyber"] {
+  --ink: #f0f0f0;
+  --paper: #0a0a0f;
+  --warm-gray: #1a1a2e;
+  --muted: #6666aa;
+  --accent: #00fff9;
+  --accent-sage: #ff00ff;
+  --accent-slate: #00ff9f;
+  --accent-rose: #ff3366;
+  --status-active: #00ff00;
+  --status-cooling: #ffff00;
+  --status-abandoned: #ff3366;
+  --card-bg: #12121a;
+  --shadow: 0 0 20px rgba(0, 255, 249, 0.3);
+  --shadow-lg: 0 0 40px rgba(0, 255, 249, 0.2);
+  --glow: 0 0 10px var(--accent);
+  --border-width: 1px;
+  --border-style: solid;
+  --border: var(--border-width) var(--border-style) var(--accent);
+  --radius: 2px;
+  --radius-sm: 0px;
+  --radius-lg: 4px;
+  --bg-texture: none;
+  --bg-gradient: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #0a0a0f 100%);
+  --badge-bg: rgba(0, 255, 249, 0.1);
+  --banner-bg: linear-gradient(135deg, rgba(0, 255, 249, 0.05), rgba(255, 0, 255, 0.05));
+  --banner-border: rgba(0, 255, 249, 0.3);
+}
+
+/* ============================================================
+   THEME: RETRO-FUTURISTIC (复古未来)
+   80s vibes, warm neon, geometric, synthwave
+   ============================================================ */
+[data-theme="retro"] {
+  --ink: #ffffff;
+  --paper: #1a0a2e;
+  --warm-gray: #2d1b4e;
+  --muted: #9966cc;
+  --accent: #ff6b9d;
+  --accent-sage: #00ffcc;
+  --accent-slate: #ffcc00;
+  --accent-rose: #ff6b9d;
+  --status-active: #00ff88;
+  --status-cooling: #ffcc00;
+  --status-abandoned: #ff6b9d;
+  --card-bg: #240f3d;
+  --shadow: 0 4px 30px rgba(255, 107, 157, 0.3);
+  --shadow-lg: 0 8px 50px rgba(255, 107, 157, 0.2);
+  --glow: 0 0 15px var(--accent);
+  --border-width: 2px;
+  --border-style: solid;
+  --border: var(--border-width) var(--border-style) var(--accent);
+  --radius: 0px;
+  --radius-sm: 0px;
+  --radius-lg: 0px;
+  --bg-texture: none;
+  --bg-gradient: linear-gradient(135deg, #1a0a2e 0%, #2d1b4e 25%, #1a0a2e 50%, #3d2b5e 75%, #1a0a2e 100%);
+  --badge-bg: rgba(255, 107, 157, 0.15);
+  --banner-bg: linear-gradient(135deg, rgba(255, 107, 157, 0.08), rgba(0, 255, 204, 0.08));
+  --banner-border: rgba(255, 107, 157, 0.4);
+}
+
+/* ============================================================
+   THEME: MAGAZINE EDITORIAL (杂志编辑风)
+   Bold typography, high contrast, editorial grace
+   ============================================================ */
+[data-theme="magazine"] {
+  --ink: #1a1a1a;
+  --paper: #f5f0e8;
+  --warm-gray: #d4cfc5;
+  --muted: #7a756d;
+  --accent: #c41e3a;
+  --accent-sage: #2d5a27;
+  --accent-slate: #4a5568;
+  --accent-rose: #c41e3a;
+  --status-active: #1a4d1a;
+  --status-cooling: #8b6914;
+  --status-abandoned: #991a1a;
+  --card-bg: #fffdf8;
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.12);
+  --border-width: 0px;
+  --border-style: none;
+  --border: var(--border-width) var(--border-style) var(--warm-gray);
+  --radius: 0px;
+  --radius-sm: 0px;
+  --radius-lg: 0px;
+  --bg-texture: none;
+  --bg-gradient: linear-gradient(180deg, #f5f0e8 0%, #fffdf8 100%);
+}
+
+/* ============================================================
+   THEME: GLASSMORPHISM (玻璃拟态)
+   Frosted glass effect, translucent, modern
+   ============================================================ */
+[data-theme="glass"] {
+  --ink: #ffffff;
+  --paper: #1a1a2e;
+  --warm-gray: rgba(255, 255, 255, 0.1);
+  --muted: rgba(255, 255, 255, 0.6);
+  --accent: #64b5f6;
+  --accent-sage: #81c784;
+  --accent-slate: #90caf9;
+  --accent-rose: #f48fb1;
+  --status-active: #66bb6a;
+  --status-cooling: #ffca28;
+  --status-abandoned: #ef5350;
+  --card-bg: rgba(255, 255, 255, 0.08);
+  --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.4);
+  --blur: 20px;
+  --border-width: 1px;
+  --border-style: solid;
+  --border: var(--border-width) var(--border-style) rgba(255, 255, 255, 0.15);
+  --radius: 16px;
+  --radius-sm: 8px;
+  --radius-lg: 24px;
+  --bg-texture: none;
+  --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #1a1a2e 100%);
+  --badge-bg: rgba(255, 255, 255, 0.12);
+  --banner-bg: rgba(255, 255, 255, 0.08);
+  --banner-border: rgba(255, 255, 255, 0.18);
+}
+
+/* ============================================================
+   AUTO THEME: Follow system preference (default dark)
+   ============================================================ */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme]) {
     --ink: #f8f5f0;
     --paper: #1a1613;
     --warm-gray: #2d2825;
     --muted: #7a716a;
-    --accent-amber: #e8956a;
+    --accent: #e8956a;
     --accent-sage: #7a9a82;
     --accent-slate: #7a8b9a;
     --accent-rose: #c27a7a;
@@ -54,27 +231,35 @@
     --status-abandoned: #c27a7a;
     --card-bg: #241f1c;
     --shadow: rgba(0, 0, 0, 0.3);
+    --shadow-lg: rgba(0, 0, 0, 0.4);
   }
 }
+
+/* ============================================================
+   BASE STYLES
+   ============================================================ */
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
-  font-family: 'DM Sans', sans-serif;
+  font-family: var(--font-body);
   background: var(--paper);
   color: var(--ink);
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
+  transition: background var(--transition-normal), color var(--transition-normal);
 }
 
-/* Subtle paper texture */
+/* Background layer */
 body::before {
   content: '';
   position: fixed;
   inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  background: var(--bg-gradient);
+  background-image: var(--bg-texture), var(--bg-gradient);
   pointer-events: none;
   z-index: 0;
+  backdrop-filter: blur(var(--blur));
 }
 
 .container {
@@ -85,29 +270,31 @@ body::before {
   padding: 48px 32px 80px;
 }
 
-/* When the saved-for-later sidebar is open, expand the container
-   so the tab grid still has room for 2-3 columns */
 .container:has(.dashboard-columns) {
   max-width: 1300px;
 }
 
-/* ---- Header ---- */
+/* ============================================================
+   HEADER
+   ============================================================ */
 header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   margin-bottom: 48px;
   padding-bottom: 24px;
-  border-bottom: 1px solid var(--warm-gray);
+  border-bottom: var(--border);
+  transition: border-color var(--transition-normal);
 }
 
 .header-left h1 {
-  font-family: 'Newsreader', serif;
+  font-family: var(--font-display);
   font-weight: 300;
   font-size: 28px;
   letter-spacing: -0.5px;
   color: var(--ink);
   margin-bottom: 4px;
+  transition: color var(--transition-normal);
 }
 
 .header-left .date {
@@ -116,81 +303,124 @@ header {
   font-weight: 400;
   letter-spacing: 0.5px;
   text-transform: uppercase;
+  transition: color var(--transition-normal);
 }
 
-/* ---- Theme Toggle Button ---- */
 .header-right {
   display: flex;
   align-items: center;
+  gap: 8px;
 }
 
-.theme-toggle {
+/* ============================================================
+   THEME SELECTOR & TOGGLE
+   ============================================================ */
+.theme-btn {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 36px;
   height: 36px;
-  border: 1px solid var(--warm-gray);
-  border-radius: 8px;
+  border: var(--border);
+  border-radius: var(--radius);
   background: var(--card-bg);
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all var(--transition-fast);
   position: relative;
 }
 
-.theme-toggle:hover {
-  border-color: var(--ink);
+.theme-btn:hover {
+  border-color: var(--accent);
   transform: translateY(-1px);
 }
 
-.theme-toggle svg {
+.theme-btn svg {
   width: 18px;
   height: 18px;
   color: var(--muted);
-  transition: all 0.2s;
+  transition: color var(--transition-fast);
+}
+
+.theme-btn:hover svg {
+  color: var(--accent);
+}
+
+/* Theme dropdown */
+.theme-dropdown {
   position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: var(--card-bg);
+  border: var(--border);
+  border-radius: var(--radius-lg);
+  padding: 8px;
+  min-width: 180px;
+  box-shadow: var(--shadow-lg);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition: all var(--transition-fast);
+  z-index: 100;
+  backdrop-filter: blur(var(--blur));
 }
 
-.theme-toggle:hover svg {
+.theme-dropdown.open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.theme-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  font-size: 13px;
   color: var(--ink);
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
 }
 
-/* Show sun icon by default, hide moon */
-.theme-toggle .icon-sun {
-  opacity: 1;
-}
-.theme-toggle .icon-moon {
-  opacity: 0;
+.theme-option:hover {
+  background: var(--badge-bg);
 }
 
-/* When dark mode is active, swap icons */
-[data-theme="dark"] .theme-toggle .icon-sun {
-  opacity: 0;
-}
-[data-theme="dark"] .theme-toggle .icon-moon {
-  opacity: 1;
+.theme-option.active {
+  background: var(--badge-bg);
+  color: var(--accent);
 }
 
-/* Also swap icons when system is dark (without explicit data-theme) */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .theme-toggle .icon-sun {
-    opacity: 0;
-  }
-  :root:not([data-theme="light"]) .theme-toggle .icon-moon {
-    opacity: 1;
-  }
+.theme-option .theme-preview {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid var(--warm-gray);
 }
 
-/* ---- Tab cleanup banner ---- */
+.theme-option.active .theme-preview {
+  border-color: var(--accent);
+  box-shadow: var(--glow);
+}
+
+/* ============================================================
+   TAB CLEANUP BANNER
+   ============================================================ */
 .tab-cleanup-banner {
-  background: linear-gradient(135deg, rgba(200, 113, 58, 0.04), rgba(200, 113, 58, 0.09));
-  border: 1px solid rgba(200, 113, 58, 0.18);
-  border-radius: 8px;
+  background: var(--banner-bg);
+  border: 1px solid var(--banner-border);
+  border-radius: var(--radius);
   padding: 16px 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 16px;
+  transition: all var(--transition-normal);
+  backdrop-filter: blur(var(--blur));
 }
 
 .tab-cleanup-left {
@@ -213,7 +443,7 @@ header {
 .tab-cleanup-icon svg {
   width: 18px;
   height: 18px;
-  color: var(--accent-amber);
+  color: var(--accent);
 }
 
 .tab-cleanup-text {
@@ -227,17 +457,18 @@ header {
 }
 
 .tab-cleanup-btn {
-  font-family: 'DM Sans', sans-serif;
+  font-family: var(--font-body);
   font-size: 12px;
   font-weight: 600;
   padding: 8px 20px;
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   border: none;
-  background: var(--accent-amber);
+  background: var(--accent);
   color: white;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all var(--transition-fast);
   white-space: nowrap;
+  box-shadow: var(--glow);
 }
 
 .tab-cleanup-btn:hover {
@@ -245,46 +476,9 @@ header {
   transform: translateY(-1px);
 }
 
-/* ---- Nudge banner ---- */
-.nudge-banner {
-  background: linear-gradient(135deg, rgba(179, 90, 90, 0.04), rgba(179, 90, 90, 0.08));
-  border: 1px solid rgba(179, 90, 90, 0.15);
-  border-radius: 8px;
-  padding: 16px 24px;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-bottom: 40px;
-}
-
-.nudge-icon {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: rgba(179, 90, 90, 0.1);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.nudge-icon svg {
-  width: 18px;
-  height: 18px;
-  color: var(--status-abandoned);
-}
-
-.nudge-text {
-  font-size: 13px;
-  color: var(--ink);
-  line-height: 1.5;
-}
-
-.nudge-text strong {
-  font-weight: 600;
-}
-
-/* ---- Section Headers ---- */
+/* ============================================================
+   SECTION HEADERS
+   ============================================================ */
 .section-header {
   display: flex;
   align-items: center;
@@ -294,18 +488,20 @@ header {
 }
 
 .section-header h2 {
-  font-family: 'Newsreader', serif;
+  font-family: var(--font-display);
   font-weight: 400;
   font-size: 18px;
   font-style: italic;
   color: var(--muted);
   white-space: nowrap;
+  transition: color var(--transition-normal);
 }
 
 .section-line {
   flex: 1;
   height: 1px;
   background: var(--warm-gray);
+  transition: background var(--transition-normal);
 }
 
 .section-count {
@@ -314,9 +510,12 @@ header {
   font-weight: 500;
   letter-spacing: 0.5px;
   white-space: nowrap;
+  transition: color var(--transition-normal);
 }
 
-/* ---- Mission Cards ---- */
+/* ============================================================
+   MISSION CARDS
+   ============================================================ */
 .missions {
   columns: 280px;
   column-gap: 12px;
@@ -325,21 +524,21 @@ header {
 
 .mission-card {
   background: var(--card-bg);
-  border: 1px solid var(--warm-gray);
-  border-radius: 8px;
+  border: var(--border);
+  border-radius: var(--radius);
   padding: 16px 18px;
   display: flex;
   flex-direction: column;
   gap: 8px;
-  transition: box-shadow 0.25s ease, transform 0.25s ease;
+  transition: all var(--transition-normal);
   cursor: pointer;
   position: relative;
   overflow: hidden;
-  break-inside: avoid;       /* don't split a card across columns */
-  margin-bottom: 12px;       /* vertical spacing (replaces grid gap) */
+  break-inside: avoid;
+  margin-bottom: 12px;
+  backdrop-filter: blur(var(--blur));
 }
 
-/* Colored top border instead of side bar for grid cards */
 .mission-card::before {
   content: '';
   position: absolute;
@@ -348,22 +547,23 @@ header {
   right: 0;
   height: 3px;
   background: var(--warm-gray);
+  transition: background var(--transition-fast);
 }
 
-.mission-card.has-active-bar::before { background: var(--status-active); }
-.mission-card.has-amber-bar::before { background: var(--accent-amber); }
+.mission-card.has-active-bar::before { background: var(--status-active); box-shadow: 0 0 10px var(--status-active); }
+.mission-card.has-amber-bar::before { background: var(--accent); box-shadow: var(--glow); }
 .mission-card.has-neutral-bar::before { background: var(--warm-gray); }
 
 .mission-card:hover {
-  box-shadow: 0 4px 20px var(--shadow);
-  transform: translateY(-1px);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+  border-color: var(--accent);
 }
 
-/* Closing animation — card scales down and fades out */
 .mission-card.closing {
   opacity: 0;
   transform: scale(0.9);
-  transition: opacity 0.25s ease, transform 0.25s ease;
+  transition: all var(--transition-normal);
   pointer-events: none;
 }
 
@@ -371,16 +571,10 @@ header {
   display: none !important;
 }
 
-/* Old side status bar — hidden, replaced by top border via ::before */
-.status-bar {
-  display: none;
-}
-
 .mission-content {
   min-width: 0;
 }
 
-/* Hide the right-side meta (page count) — info is already in the badge */
 .mission-meta {
   display: none;
 }
@@ -398,6 +592,7 @@ header {
   font-size: 15px;
   color: var(--ink);
   letter-spacing: -0.2px;
+  transition: color var(--transition-normal);
 }
 
 .mission-tag {
@@ -406,35 +601,38 @@ header {
   letter-spacing: 1px;
   font-weight: 600;
   padding: 2px 8px;
-  border-radius: 3px;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
 }
 
 .mission-tag.active {
   color: var(--status-active);
-  background: rgba(61, 122, 74, 0.08);
+  background: rgba(61, 122, 74, 0.1);
+  box-shadow: 0 0 8px var(--status-active);
 }
 
 .mission-tag.cooling {
   color: var(--status-cooling);
-  background: rgba(184, 137, 46, 0.08);
+  background: rgba(184, 137, 46, 0.1);
 }
 
 .mission-tag.abandoned {
   color: var(--status-abandoned);
-  background: rgba(179, 90, 90, 0.08);
+  background: rgba(179, 90, 90, 0.1);
 }
 
-/* Tab indicator badge — shows how many Chrome tabs are still open for this mission */
+/* Tab indicator badge */
 .open-tabs-badge {
   display: inline-flex;
   align-items: center;
   gap: 4px;
   font-size: 10px;
   font-weight: 500;
-  color: var(--accent-amber);
-  background: rgba(200, 113, 58, 0.08);
+  color: var(--accent);
+  background: var(--badge-bg);
   padding: 2px 8px;
-  border-radius: 3px;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
 }
 
 .open-tabs-badge svg {
@@ -442,33 +640,21 @@ header {
   height: 10px;
 }
 
-.mission-summary {
-  font-size: 13px;
-  color: var(--muted);
-  line-height: 1.5;
-  margin-bottom: 8px;
-}
-
-.mission-pages {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-}
-
-/* ---- Tab row — each tab is a full-width row with favicon, title, and actions ---- */
+/* Tab row */
 .page-chip {
   font-size: 13px;
   color: var(--ink);
-  background: transparent;
+  background: var(--chip-bg);
   padding: 8px 4px;
   border-radius: 0;
   border: none;
-  border-bottom: 1px solid rgba(154, 145, 138, 0.1);
+  border-bottom: 1px solid var(--chip-border);
   position: relative;
   display: flex;
   align-items: center;
   gap: 8px;
   line-height: 1.4;
+  transition: all var(--transition-fast);
 }
 
 .page-chip:last-child,
@@ -476,7 +662,6 @@ header {
   border-bottom: none;
 }
 
-/* Favicon */
 .chip-favicon {
   width: 16px;
   height: 16px;
@@ -484,29 +669,25 @@ header {
   border-radius: 2px;
 }
 
-/* Title text — wraps naturally, no truncation */
 .chip-text {
   flex: 1;
   min-width: 0;
-  /* Show up to 2 lines, then ellipsis */
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
-/* Duplicate badge */
 .chip-dupe-badge {
-  color: var(--accent-amber);
+  color: var(--accent);
   font-weight: 600;
+  text-shadow: var(--glow);
 }
 
-/* Duplicate border highlight */
 .chip-has-dupes {
-  border-color: rgba(200, 113, 58, 0.25);
+  border-color: var(--accent);
 }
 
-/* Action buttons grouped on the right */
 .chip-actions {
   display: flex;
   align-items: center;
@@ -515,7 +696,6 @@ header {
   margin-left: auto;
 }
 
-/* ---- Chip action buttons (save + close) ---- */
 .chip-action {
   display: inline-flex;
   align-items: center;
@@ -525,9 +705,9 @@ header {
   color: var(--muted);
   cursor: pointer;
   padding: 4px;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   opacity: 0.35;
-  transition: opacity 0.15s, color 0.15s, background 0.15s;
+  transition: all var(--transition-fast);
   flex-shrink: 0;
 }
 
@@ -538,7 +718,7 @@ header {
 
 .chip-action:hover {
   opacity: 1;
-  background: rgba(154, 145, 138, 0.1);
+  background: var(--badge-bg);
 }
 
 .chip-save:hover {
@@ -553,31 +733,22 @@ header {
 
 .page-chip.clickable {
   cursor: pointer;
-  transition: background 0.15s ease;
+  transition: background var(--transition-fast);
 }
 
 .page-chip.clickable:hover {
-  background: rgba(200, 113, 58, 0.04);
+  background: var(--badge-bg);
 }
 
-/* "+N more" overflow chip */
 .page-chip-overflow {
   font-size: 12px;
   color: var(--muted);
   padding: 6px 4px;
 }
 
-/* mission-meta hidden — see above */
-
-.mission-time {
-  font-size: 12px;
-  color: var(--muted);
-  margin-bottom: 4px;
-}
-
 .mission-page-count {
   font-size: 20px;
-  font-family: 'Newsreader', serif;
+  font-family: var(--font-display);
   font-weight: 300;
   color: var(--ink);
   line-height: 1;
@@ -590,7 +761,9 @@ header {
   letter-spacing: 1px;
 }
 
-/* ---- Actions row ---- */
+/* ============================================================
+   ACTION BUTTONS
+   ============================================================ */
 .actions {
   display: flex;
   gap: 8px;
@@ -599,15 +772,15 @@ header {
 
 .action-btn {
   font-size: 11px;
-  font-family: 'DM Sans', sans-serif;
+  font-family: var(--font-body);
   font-weight: 500;
   padding: 5px 14px;
-  border-radius: 4px;
-  border: 1px solid var(--warm-gray);
+  border-radius: var(--radius-sm);
+  border: var(--border);
   background: var(--card-bg);
   color: var(--muted);
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all var(--transition-fast);
   display: inline-flex;
   align-items: center;
   gap: 5px;
@@ -635,13 +808,14 @@ header {
 
 .action-btn.close-tabs {
   border-color: rgba(200, 113, 58, 0.3);
-  color: var(--accent-amber);
-  background: rgba(200, 113, 58, 0.04);
+  color: var(--accent);
+  background: var(--badge-bg);
 }
 
 .action-btn.close-tabs:hover {
-  background: rgba(200, 113, 58, 0.1);
-  border-color: var(--accent-amber);
+  background: rgba(200, 113, 58, 0.15);
+  border-color: var(--accent);
+  box-shadow: var(--glow);
 }
 
 .action-btn.save-tabs {
@@ -664,27 +838,31 @@ header {
   color: var(--status-abandoned);
 }
 
-/* ---- Toast notification ---- */
+/* ============================================================
+   TOAST NOTIFICATION
+   ============================================================ */
 .toast {
   position: fixed;
   bottom: 32px;
   left: 50%;
   transform: translateX(-50%) translateY(80px);
-  background: var(--ink);
-  color: var(--paper);
-  font-family: 'DM Sans', sans-serif;
+  background: var(--card-bg);
+  color: var(--ink);
+  font-family: var(--font-body);
   font-size: 13px;
   font-weight: 500;
   padding: 12px 24px;
-  border-radius: 8px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+  border-radius: var(--radius);
+  border: var(--border);
+  box-shadow: var(--shadow-lg);
   z-index: 100;
   opacity: 0;
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all var(--transition-slow);
   pointer-events: none;
   display: flex;
   align-items: center;
   gap: 8px;
+  backdrop-filter: blur(var(--blur));
 }
 
 .toast.visible {
@@ -698,14 +876,17 @@ header {
   color: var(--status-active);
 }
 
-/* ---- Footer ---- */
+/* ============================================================
+   FOOTER
+   ============================================================ */
 footer {
   margin-top: 48px;
   padding-top: 20px;
-  border-top: 1px solid var(--warm-gray);
+  border-top: var(--border);
   display: flex;
   justify-content: space-between;
   align-items: center;
+  transition: border-color var(--transition-normal);
 }
 
 .footer-stats {
@@ -718,12 +899,12 @@ footer {
 }
 
 .stat-num {
-  font-family: 'Newsreader', serif;
+  font-family: var(--font-display);
   font-size: 28px;
   font-weight: 300;
   color: var(--ink);
   line-height: 1;
-  transition: all 0.3s;
+  transition: all var(--transition-normal);
 }
 
 .stat-label {
@@ -732,6 +913,7 @@ footer {
   letter-spacing: 1.5px;
   color: var(--muted);
   margin-top: 4px;
+  transition: color var(--transition-normal);
 }
 
 .last-refresh {
@@ -740,10 +922,10 @@ footer {
 }
 
 .refresh-btn {
-  font-family: 'DM Sans', sans-serif;
+  font-family: var(--font-body);
   font-size: 11px;
   font-weight: 500;
-  color: var(--accent-amber);
+  color: var(--accent);
   background: none;
   border: none;
   cursor: pointer;
@@ -751,89 +933,81 @@ footer {
   text-underline-offset: 2px;
 }
 
-/* ---- Animations ---- */
+/* ============================================================
+   ANIMATIONS
+   ============================================================ */
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(12px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* Cyberpunk glitch effect */
+[data-theme="cyber"] .mission-card.has-active-bar::before {
+  animation: glitchPulse 2s infinite;
+}
+
+@keyframes glitchPulse {
+  0%, 100% { box-shadow: 0 0 10px var(--status-active); }
+  50% { box-shadow: 0 0 20px var(--status-active), 0 0 30px var(--status-active); }
+}
+
+/* Retro scanline effect */
+[data-theme="retro"] body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.1) 2px,
+    rgba(0, 0, 0, 0.1) 4px
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
 header { animation: fadeUp 0.5s ease both; }
 .tab-cleanup-banner { animation: fadeUp 0.5s ease 0.1s both; }
-.nudge-banner { animation: fadeUp 0.5s ease 0.15s both; }
 .active-section .section-header { animation: fadeUp 0.5s ease 0.2s both; }
 .active-section .missions .mission-card:nth-child(1) { animation: fadeUp 0.4s ease 0.25s both; }
 .active-section .missions .mission-card:nth-child(2) { animation: fadeUp 0.4s ease 0.3s both; }
 .active-section .missions .mission-card:nth-child(3) { animation: fadeUp 0.4s ease 0.35s both; }
 .active-section .missions .mission-card:nth-child(4) { animation: fadeUp 0.4s ease 0.4s both; }
-.abandoned-section .section-header { animation: fadeUp 0.5s ease 0.45s both; }
-.abandoned-section .missions .mission-card:nth-child(1) { animation: fadeUp 0.4s ease 0.5s both; }
-.abandoned-section .missions .mission-card:nth-child(2) { animation: fadeUp 0.4s ease 0.55s both; }
-.abandoned-section .missions .mission-card:nth-child(3) { animation: fadeUp 0.4s ease 0.6s both; }
-footer { animation: fadeUp 0.5s ease 0.65s both; }
-
-.deferred-list .deferred-item:nth-child(1) { animation-delay: 0.05s; }
-.deferred-list .deferred-item:nth-child(2) { animation-delay: 0.1s; }
-.deferred-list .deferred-item:nth-child(3) { animation-delay: 0.15s; }
-.deferred-list .deferred-item:nth-child(4) { animation-delay: 0.2s; }
-.deferred-list .deferred-item:nth-child(5) { animation-delay: 0.25s; }
+footer { animation: fadeUp 0.5s ease 0.5s both; }
 .deferred-column .section-header { animation: fadeUp 0.5s ease 0.1s both; }
 
-
-/* ================================================================
-   STATIC DEFAULT VIEW — new elements added for "AI on demand"
-   ================================================================ */
-
-/* ---- Neutral status bar (domain-grouped cards, no AI color) ---- */
-.status-bar.neutral {
-  background: var(--warm-gray);
-}
-
-/* ---- "Domain" tag on static domain cards ---- */
-.mission-tag.neutral {
-  color: var(--muted);
-  background: rgba(154, 145, 138, 0.1);
-}
-
-/* ================================================================
-   MISSIONS EMPTY STATE
-   Shown when all mission cards have been closed.
-   A calm, satisfying "you did it" moment.
-   ================================================================ */
-
+/* ============================================================
+   EMPTY STATES
+   ============================================================ */
 .missions-empty-state {
-  /* Takes the full width — spans all columns */
   column-span: all;
-
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 12px;
-
   padding: 56px 24px;
   text-align: center;
-
   animation: fadeUp 0.5s ease both;
 }
 
-/* CSS-drawn checkmark in a glowing circle */
 .empty-checkmark {
   width: 56px;
   height: 56px;
   border-radius: 50%;
   background: rgba(90, 122, 98, 0.1);
   border: 1.5px solid rgba(90, 122, 98, 0.3);
-
-  /* Soft sage glow */
-  box-shadow: 0 0 0 8px rgba(90, 122, 98, 0.05),
-              0 0 0 16px rgba(90, 122, 98, 0.03);
-
+  box-shadow: 0 0 0 8px rgba(90, 122, 98, 0.05);
   display: flex;
   align-items: center;
   justify-content: center;
-
-  /* Pop in with a gentle scale animation */
   animation: checkPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s both;
+}
+
+@keyframes checkPop {
+  from { transform: scale(0.6); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
 }
 
 .empty-checkmark svg {
@@ -843,13 +1017,8 @@ footer { animation: fadeUp 0.5s ease 0.65s both; }
   stroke-width: 2.5;
 }
 
-@keyframes checkPop {
-  from { transform: scale(0.6); opacity: 0; }
-  to   { transform: scale(1);   opacity: 1; }
-}
-
 .empty-title {
-  font-family: 'Newsreader', serif;
+  font-family: var(--font-display);
   font-size: 20px;
   font-weight: 400;
   font-style: italic;
@@ -864,47 +1033,34 @@ footer { animation: fadeUp 0.5s ease 0.65s both; }
   letter-spacing: 0.3px;
 }
 
-
-/* ================================================================
+/* ============================================================
    UPDATE BANNER
-   Appears at the very top of the page when a new version is available.
-   Intentionally thin and unobtrusive — it's informational, not urgent.
-   The warm sage green palette feels calm and positive ("new thing!"),
-   contrasting with the amber/rose warning tones used elsewhere.
-   ================================================================ */
-
+   ============================================================ */
 .update-banner {
-  /* Thin bar — sits above the header, below the container's top padding */
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-
-  /* Sage green tint — matches accent-sage but very light */
   background: linear-gradient(135deg, rgba(90, 122, 98, 0.05), rgba(90, 122, 98, 0.10));
   border: 1px solid rgba(90, 122, 98, 0.22);
-  border-radius: 8px;
+  border-radius: var(--radius);
   padding: 10px 16px;
-
-  /* Push the header down slightly */
   margin-bottom: 24px;
-
-  /* Slide in from above when it appears */
   animation: bannerSlideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+  backdrop-filter: blur(var(--blur));
 }
 
 @keyframes bannerSlideIn {
   from { opacity: 0; transform: translateY(-8px); }
-  to   { opacity: 1; transform: translateY(0); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-/* Left cluster: icon + text */
 .update-banner-left {
   display: flex;
   align-items: center;
   gap: 10px;
   flex: 1;
-  min-width: 0; /* prevents text overflow from breaking layout */
+  min-width: 0;
 }
 
 .update-banner-icon {
@@ -923,7 +1079,6 @@ footer { animation: fadeUp 0.5s ease 0.65s both; }
   opacity: 0.85;
 }
 
-/* Right cluster: action button + dismiss X */
 .update-banner-right {
   display: flex;
   align-items: center;
@@ -931,24 +1086,23 @@ footer { animation: fadeUp 0.5s ease 0.65s both; }
   flex-shrink: 0;
 }
 
-/* "Update now" button — small, filled, sage green */
 .update-banner-btn {
-  font-family: 'DM Sans', sans-serif;
+  font-family: var(--font-body);
   font-size: 12px;
   font-weight: 500;
   color: #fff;
   background: var(--accent-sage);
   border: none;
-  border-radius: 5px;
+  border-radius: var(--radius-sm);
   padding: 5px 12px;
   cursor: pointer;
   letter-spacing: 0.2px;
-  transition: background 0.2s, opacity 0.2s;
+  transition: background var(--transition-fast);
   white-space: nowrap;
 }
 
 .update-banner-btn:hover {
-  background: #4a6952; /* slightly darker sage */
+  opacity: 0.85;
 }
 
 .update-banner-btn:disabled {
@@ -956,7 +1110,6 @@ footer { animation: fadeUp 0.5s ease 0.65s both; }
   cursor: not-allowed;
 }
 
-/* Dismiss X button — minimal, icon-only */
 .update-banner-dismiss {
   display: flex;
   align-items: center;
@@ -966,15 +1119,15 @@ footer { animation: fadeUp 0.5s ease 0.65s both; }
   border: none;
   background: transparent;
   cursor: pointer;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   color: var(--muted);
-  transition: background 0.15s, color 0.15s;
+  transition: all var(--transition-fast);
   padding: 0;
   flex-shrink: 0;
 }
 
 .update-banner-dismiss:hover {
-  background: rgba(26, 22, 19, 0.06);
+  background: var(--badge-bg);
   color: var(--ink);
 }
 
@@ -983,25 +1136,20 @@ footer { animation: fadeUp 0.5s ease 0.65s both; }
   height: 14px;
 }
 
-
-/* ================================================================
-   SAVED FOR LATER — Checklist Column + Archive
-   ================================================================ */
-
-/* ---- Two-column layout ---- */
+/* ============================================================
+   SAVED FOR LATER — CHECKLIST COLUMN
+   ============================================================ */
 .dashboard-columns {
   display: flex;
   gap: 32px;
   align-items: flex-start;
 }
 
-/* Open tabs column keeps the grid layout */
 .dashboard-columns .active-section {
   flex: 1;
   min-width: 600px;
 }
 
-/* Saved for later column — fixed width on the right, scrolls independently */
 .deferred-column {
   width: 280px;
   flex-shrink: 0;
@@ -1011,7 +1159,6 @@ footer { animation: fadeUp 0.5s ease 0.65s both; }
   overflow-y: auto;
 }
 
-/* On narrow screens, stack vertically */
 @media (max-width: 800px) {
   .dashboard-columns {
     flex-direction: column;
@@ -1022,32 +1169,31 @@ footer { animation: fadeUp 0.5s ease 0.65s both; }
   }
 }
 
-/* ---- Checklist items ---- */
 .deferred-item {
   display: flex;
   align-items: flex-start;
   gap: 10px;
   padding: 10px 0;
-  border-bottom: 1px solid rgba(154, 145, 138, 0.12);
+  border-bottom: 1px solid var(--chip-border);
   animation: fadeUp 0.3s ease both;
+  transition: border-color var(--transition-fast);
 }
 
 .deferred-item:last-child {
   border-bottom: none;
 }
 
-/* Custom checkbox */
 .deferred-checkbox {
   appearance: none;
   -webkit-appearance: none;
   width: 18px;
   height: 18px;
   border: 2px solid var(--warm-gray);
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   cursor: pointer;
   flex-shrink: 0;
   margin-top: 1px;
-  transition: all 0.2s;
+  transition: all var(--transition-fast);
   position: relative;
 }
 
@@ -1058,9 +1204,9 @@ footer { animation: fadeUp 0.5s ease 0.65s both; }
 .deferred-checkbox:checked {
   background: var(--accent-sage);
   border-color: var(--accent-sage);
+  box-shadow: 0 0 8px var(--accent-sage);
 }
 
-/* Checkmark inside the checkbox */
 .deferred-checkbox:checked::after {
   content: '';
   position: absolute;
@@ -1073,7 +1219,6 @@ footer { animation: fadeUp 0.5s ease 0.65s both; }
   transform: rotate(45deg);
 }
 
-/* Item content (title, domain, time) */
 .deferred-info {
   flex: 1;
   min-width: 0;
@@ -1087,11 +1232,11 @@ footer { animation: fadeUp 0.5s ease 0.65s both; }
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  transition: color 0.15s;
+  transition: color var(--transition-fast);
 }
 
 .deferred-title:hover {
-  color: var(--accent-amber);
+  color: var(--accent);
 }
 
 .deferred-meta {
@@ -1102,7 +1247,6 @@ footer { animation: fadeUp 0.5s ease 0.65s both; }
   gap: 8px;
 }
 
-/* Checked-off item — strikethrough + faded */
 .deferred-item.checked .deferred-title {
   text-decoration: line-through;
   color: var(--muted);
@@ -1112,7 +1256,6 @@ footer { animation: fadeUp 0.5s ease 0.65s both; }
   opacity: 0.5;
 }
 
-/* Dismiss (X) button */
 .deferred-dismiss {
   background: none;
   border: none;
@@ -1120,7 +1263,7 @@ footer { animation: fadeUp 0.5s ease 0.65s both; }
   cursor: pointer;
   padding: 2px;
   opacity: 0.3;
-  transition: opacity 0.15s, color 0.15s;
+  transition: all var(--transition-fast);
   flex-shrink: 0;
   margin-top: 1px;
 }
@@ -1135,14 +1278,12 @@ footer { animation: fadeUp 0.5s ease 0.65s both; }
   color: var(--status-abandoned);
 }
 
-/* Slide-out animation for items being removed */
 .deferred-item.removing {
   opacity: 0;
   transform: translateX(20px);
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition: all var(--transition-normal);
 }
 
-/* ---- Empty state ---- */
 .deferred-empty {
   font-size: 13px;
   color: var(--muted);
@@ -1151,15 +1292,15 @@ footer { animation: fadeUp 0.5s ease 0.65s both; }
   text-align: center;
 }
 
-/* ---- Archive section ---- */
 .deferred-archive {
   margin-top: 16px;
   padding-top: 12px;
-  border-top: 1px solid var(--warm-gray);
+  border-top: var(--border);
+  transition: border-color var(--transition-normal);
 }
 
 .archive-toggle {
-  font-family: 'DM Sans', sans-serif;
+  font-family: var(--font-body);
   font-size: 12px;
   font-weight: 500;
   color: var(--muted);
@@ -1172,7 +1313,7 @@ footer { animation: fadeUp 0.5s ease 0.65s both; }
   padding: 4px 0;
   width: 100%;
   text-align: left;
-  transition: color 0.15s;
+  transition: color var(--transition-fast);
 }
 
 .archive-toggle:hover {
@@ -1182,7 +1323,7 @@ footer { animation: fadeUp 0.5s ease 0.65s both; }
 .archive-chevron {
   width: 14px;
   height: 14px;
-  transition: transform 0.2s;
+  transition: transform var(--transition-fast);
 }
 
 .archive-toggle.open .archive-chevron {
@@ -1200,34 +1341,35 @@ footer { animation: fadeUp 0.5s ease 0.65s both; }
 }
 
 .archive-search {
-  font-family: 'DM Sans', sans-serif;
+  font-family: var(--font-body);
   font-size: 12px;
   width: 100%;
   padding: 8px 12px;
-  border: 1px solid var(--warm-gray);
-  border-radius: 6px;
+  border: var(--border);
+  border-radius: var(--radius);
   background: var(--card-bg);
   color: var(--ink);
   outline: none;
-  transition: border-color 0.2s;
+  transition: all var(--transition-fast);
   margin-bottom: 12px;
 }
 
 .archive-search:focus {
-  border-color: var(--accent-amber);
+  border-color: var(--accent);
+  box-shadow: var(--glow);
 }
 
 .archive-search::placeholder {
   color: var(--muted);
 }
 
-/* Archive items are simpler — just title + domain + date */
 .archive-item {
   display: flex;
   align-items: center;
   gap: 8px;
   padding: 6px 0;
-  border-bottom: 1px solid rgba(154, 145, 138, 0.08);
+  border-bottom: 1px solid var(--chip-border);
+  transition: border-color var(--transition-fast);
 }
 
 .archive-item:last-child {
@@ -1243,7 +1385,7 @@ footer { animation: fadeUp 0.5s ease 0.65s both; }
   white-space: nowrap;
   flex: 1;
   min-width: 0;
-  transition: color 0.15s;
+  transition: color var(--transition-fast);
 }
 
 .archive-item-title:hover {

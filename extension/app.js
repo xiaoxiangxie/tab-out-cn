@@ -1477,49 +1477,88 @@ document.addEventListener('input', async (e) => {
 
 
 /* ----------------------------------------------------------------
-   THEME — Auto-follow system + manual toggle
+   THEME SYSTEM — Multi-theme support with dropdown selector
    ---------------------------------------------------------------- */
+
+// Available themes configuration
+const THEMES = {
+  auto: { name: '跟随系统', cssVar: null },
+  minimal: { name: '极简主义', cssVar: 'minimal' },
+  magazine: { name: '杂志编辑风', cssVar: 'magazine' },
+  glass: { name: '玻璃拟态', cssVar: 'glass' },
+  cyber: { name: '赛博朋克', cssVar: 'cyber' },
+  retro: { name: '复古未来', cssVar: 'retro' }
+};
+
+// Initialize theme system
 async function initTheme() {
-  // Load saved preference
   const { theme } = await chrome.storage.local.get('theme');
-  if (theme) {
+  if (theme && theme !== 'auto') {
     document.documentElement.setAttribute('data-theme', theme);
+  } else if (theme === 'auto') {
+    document.documentElement.removeAttribute('data-theme');
   }
+  // If no saved preference, CSS media query handles it
+  updateThemeDropdownUI();
 }
 
-function toggleTheme() {
-  const current = document.documentElement.getAttribute('data-theme');
-  const isDark = current === 'dark' || (!current && window.matchMedia('(prefers-color-scheme: dark)').matches);
-  const newTheme = isDark ? 'light' : 'dark';
-
-  if (newTheme === 'dark') {
-    document.documentElement.setAttribute('data-theme', 'dark');
+// Set a specific theme
+function setTheme(themeName) {
+  if (themeName === 'auto') {
+    document.documentElement.removeAttribute('data-theme');
   } else {
-    document.documentElement.setAttribute('data-theme', 'light');
+    document.documentElement.setAttribute('data-theme', themeName);
   }
-
-  // Save preference
-  chrome.storage.local.set({ theme: newTheme });
+  chrome.storage.local.set({ theme: themeName });
+  updateThemeDropdownUI();
 }
 
-// Listen for system theme changes when no manual preference is set
-window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-  const savedTheme = document.documentElement.getAttribute('data-theme');
-  // Only auto-update if user hasn't set a manual preference
-  if (!savedTheme) {
-    // The CSS media query will handle this automatically
-  }
-});
+// Update dropdown UI to reflect current theme
+function updateThemeDropdownUI() {
+  const currentTheme = document.documentElement.getAttribute('data-theme') || 'auto';
+  document.querySelectorAll('.theme-option').forEach(btn => {
+    const theme = btn.dataset.theme;
+    const isActive = (theme === 'auto' && !document.documentElement.hasAttribute('data-theme')) ||
+                     theme === currentTheme;
+    btn.classList.toggle('active', isActive);
+  });
+}
+
+// Setup theme dropdown functionality
+function setupThemeDropdown() {
+  const btn = document.getElementById('themeBtn');
+  const dropdown = document.getElementById('themeDropdown');
+
+  if (!btn || !dropdown) return;
+
+  // Toggle dropdown on button click
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    dropdown.classList.toggle('open');
+  });
+
+  // Close dropdown when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!dropdown.contains(e.target)) {
+      dropdown.classList.remove('open');
+    }
+  });
+
+  // Handle theme selection
+  dropdown.querySelectorAll('.theme-option').forEach(option => {
+    option.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const theme = option.dataset.theme;
+      setTheme(theme);
+      dropdown.classList.remove('open');
+    });
+  });
+}
 
 /* ----------------------------------------------------------------
    INITIALIZE
    ---------------------------------------------------------------- */
 initTheme().then(() => {
-  // Setup theme toggle button
-  const themeToggle = document.getElementById('themeToggle');
-  if (themeToggle) {
-    themeToggle.addEventListener('click', toggleTheme);
-  }
-
+  setupThemeDropdown();
   renderDashboard();
 });
