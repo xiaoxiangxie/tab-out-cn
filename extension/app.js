@@ -1488,7 +1488,7 @@ const THEMES = {
   glass: { name: '玻璃拟态', cssVar: 'glass' },
   cyber: { name: '赛博朋克', cssVar: 'cyber' },
   retro: { name: '复古未来', cssVar: 'retro' },
-  ios26: { name: 'iOS 26', cssVar: 'ios26' }
+  ios26: { name: 'Liquid Glass', cssVar: 'ios26' }
 };
 
 // Initialize theme system
