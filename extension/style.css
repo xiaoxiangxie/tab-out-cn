@@ -187,7 +187,7 @@
 [data-theme="glass"] {
   --ink: #ffffff;
   --paper: #1a1a2e;
-  --warm-gray: rgba(255, 255, 255, 0.1);
+  --warm-gray: rgba(255, 255, 255, 0.12);
   --muted: rgba(255, 255, 255, 0.6);
   --accent: #64b5f6;
   --accent-sage: #81c784;
@@ -196,21 +196,304 @@
   --status-active: #66bb6a;
   --status-cooling: #ffca28;
   --status-abandoned: #ef5350;
-  --card-bg: rgba(255, 255, 255, 0.08);
-  --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.4);
+  --card-bg: rgba(255, 255, 255, 0.1);
+  --shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+  --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.35);
   --blur: 20px;
   --border-width: 1px;
   --border-style: solid;
-  --border: var(--border-width) var(--border-style) rgba(255, 255, 255, 0.15);
+  --border: var(--border-width) var(--border-style) rgba(255, 255, 255, 0.18);
   --radius: 16px;
   --radius-sm: 8px;
   --radius-lg: 24px;
   --bg-texture: none;
   --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #1a1a2e 100%);
-  --badge-bg: rgba(255, 255, 255, 0.12);
+  --badge-bg: rgba(255, 255, 255, 0.15);
+  --banner-bg: rgba(255, 255, 255, 0.1);
+  --banner-border: rgba(255, 255, 255, 0.2);
+}
+
+/* ============================================================
+   THEME: iOS 26 (iOS风格)
+   Depth, translucency, vibrant colors, SF-style
+   ============================================================ */
+[data-theme="ios26"] {
+  /* iOS signature deep purple/blue gradient */
+  --ink: #ffffff;
+  --paper: #0e0e12;
+  --warm-gray: rgba(255, 255, 255, 0.12);
+  --muted: rgba(255, 255, 255, 0.5);
+  --accent: #ff9f0a;
+  --accent-sage: #30d158;
+  --accent-slate: #5e5ce6;
+  --accent-rose: #ff375f;
+  --status-active: #30d158;
+  --status-cooling: #ffd60a;
+  --status-abandoned: #ff375f;
+  --card-bg: rgba(255, 255, 255, 0.08);
+  --shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.5);
+  --blur: 30px;
+  --border-width: 0.5px;
+  --border-style: solid;
+  --border: var(--border-width) var(--border-style) rgba(255, 255, 255, 0.15);
+  --radius: 20px;
+  --radius-sm: 12px;
+  --radius-lg: 30px;
+  --bg-texture: none;
+  --bg-gradient: linear-gradient(180deg,
+    #1c1c1e 0%,
+    #2c2c2e 15%,
+    #3a3a3c 30%,
+    #48484a 50%,
+    #636366 70%,
+    #48484a 85%,
+    #3a3a3c 100%
+  );
+
+  /* iOS-specific overrides */
+  --chip-bg: rgba(255, 255, 255, 0.05);
+  --chip-border: rgba(255, 255, 255, 0.08);
+  --badge-bg: rgba(255, 159, 10, 0.2);
   --banner-bg: rgba(255, 255, 255, 0.08);
-  --banner-border: rgba(255, 255, 255, 0.18);
+  --banner-border: rgba(255, 255, 255, 0.12);
+
+  /* Typography */
+  --font-display: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+  --font-body: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif;
+}
+
+/* iOS 26 specific card styling */
+[data-theme="ios26"] .mission-card {
+  background: linear-gradient(145deg,
+    rgba(255, 255, 255, 0.12) 0%,
+    rgba(255, 255, 255, 0.06) 100%
+  );
+  backdrop-filter: blur(30px) saturate(180%);
+  -webkit-backdrop-filter: blur(30px) saturate(180%);
+  border: 0.5px solid rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="ios26"] .mission-card::before {
+  height: 0;
+  border-radius: 20px 20px 0 0;
+  background: linear-gradient(90deg,
+    var(--accent-slate) 0%,
+    var(--accent) 50%,
+    var(--accent-rose) 100%
+  );
+  opacity: 0.8;
+}
+
+[data-theme="ios26"] .mission-card:hover {
+  transform: translateY(-3px) scale(1.01);
+  box-shadow:
+    0 16px 48px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+[data-theme="ios26"] .mission-card.has-active-bar::before {
+  background: linear-gradient(90deg, #30d158, #34c759);
+  box-shadow: 0 0 20px rgba(48, 209, 88, 0.5);
+}
+
+[data-theme="ios26"] .mission-card.has-amber-bar::before {
+  background: linear-gradient(90deg, #ff9f0a, #ff9500);
+  box-shadow: 0 0 20px rgba(255, 159, 10, 0.5);
+}
+
+/* iOS 26 header styling */
+[data-theme="ios26"] header {
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: none;
+  margin-bottom: 32px;
+  padding: 16px 24px;
+  border-radius: 0 0 24px 24px;
+}
+
+[data-theme="ios26"] .header-left h1 {
+  font-weight: 600;
+  letter-spacing: -0.5px;
+}
+
+/* iOS 26 buttons - pill shaped */
+[data-theme="ios26"] .action-btn {
+  border-radius: 12px;
+  padding: 8px 16px;
+  font-weight: 500;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+}
+
+[data-theme="ios26"] .action-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+[data-theme="ios26"] .action-btn.close-tabs {
+  background: rgba(255, 159, 10, 0.2);
+  color: #ff9f0a;
+}
+
+[data-theme="ios26"] .action-btn.close-tabs:hover {
+  background: rgba(255, 159, 10, 0.3);
+}
+
+[data-theme="ios26"] .action-btn.save-tabs {
+  background: rgba(48, 209, 88, 0.15);
+  color: #30d158;
+}
+
+/* iOS 26 badge styling */
+[data-theme="ios26"] .open-tabs-badge {
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 8px;
+  padding: 4px 10px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+/* iOS 26 section styling */
+[data-theme="ios26"] .section-header h2 {
+  font-weight: 600;
+  font-style: normal;
+  letter-spacing: 0.3px;
+}
+
+/* iOS 26 checkbox styling */
+[data-theme="ios26"] .deferred-checkbox {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="ios26"] .deferred-checkbox:checked {
+  background: #30d158;
+  border-color: #30d158;
+  box-shadow: 0 0 12px rgba(48, 209, 88, 0.5);
+}
+
+/* iOS 26 toast styling */
+[data-theme="ios26"] .toast {
+  background: rgba(30, 30, 30, 0.9);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 16px;
+  padding: 14px 20px;
+  font-weight: 500;
+  border: none;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+/* iOS 26 footer */
+[data-theme="ios26"] footer {
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: none;
+  padding: 20px 24px;
+  border-radius: 24px 24px 0 0;
+  margin-top: 32px;
+}
+
+/* iOS 26 tag styling */
+[data-theme="ios26"] .mission-tag {
+  border-radius: 6px;
+  padding: 3px 8px;
+  font-weight: 600;
+  font-size: 11px;
+}
+
+[data-theme="ios26"] .mission-tag.active {
+  background: rgba(48, 209, 88, 0.2);
+  color: #30d158;
+}
+
+[data-theme="ios26"] .mission-tag.cooling {
+  background: rgba(255, 214, 10, 0.2);
+  color: #ffd60a;
+}
+
+[data-theme="ios26"] .mission-tag.abandoned {
+  background: rgba(255, 55, 95, 0.2);
+  color: #ff375f;
+}
+
+/* iOS 26 tab cleanup banner */
+[data-theme="ios26"] .tab-cleanup-banner {
+  background: rgba(255, 159, 10, 0.12);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: none;
+  border-radius: 16px;
+  padding: 16px 20px;
+}
+
+[data-theme="ios26"] .tab-cleanup-btn {
+  background: #ff9f0a;
+  border-radius: 10px;
+  padding: 10px 20px;
+  font-weight: 600;
+}
+
+/* iOS 26 animations - spring-like */
+[data-theme="ios26"] .mission-card {
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+[data-theme="ios26"] .action-btn,
+[data-theme="ios26"] .chip-action {
+  transition: all 0.2s ease;
+}
+
+[data-theme="ios26"] .action-btn:active,
+[data-theme="ios26"] .chip-action:active {
+  transform: scale(0.95);
+}
+
+/* iOS 26 empty state */
+[data-theme="ios26"] .empty-checkmark {
+  background: rgba(48, 209, 88, 0.15);
+  border: 2px solid rgba(48, 209, 88, 0.3);
+  box-shadow:
+    0 0 0 8px rgba(48, 209, 88, 0.05),
+    0 0 30px rgba(48, 209, 88, 0.2);
+}
+
+[data-theme="ios26"] .empty-checkmark svg {
+  color: #30d158;
+  stroke-width: 2;
+}
+
+/* iOS 26 archive toggle */
+[data-theme="ios26"] .archive-toggle {
+  font-weight: 500;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+}
+
+/* iOS 26 scrollbar styling */
+[data-theme="ios26"] .deferred-column::-webkit-scrollbar {
+  width: 6px;
+}
+
+[data-theme="ios26"] .deferred-column::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+[data-theme="ios26"] .deferred-column::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
 }
 
 /* ============================================================
