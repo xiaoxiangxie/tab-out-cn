@@ -285,6 +285,8 @@ header {
   padding-bottom: 24px;
   border-bottom: var(--border);
   transition: border-color var(--transition-normal);
+  position: relative;
+  z-index: 1000;
 }
 
 .header-left h1 {
