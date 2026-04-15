@@ -113,4 +113,4 @@ MIT
 
 ---
 
-由 [Zara](https://x.com/zarazhangrui) 构建 | 中文本地化 [Tab Out CN](https://github.com/xiaoxiangxie/tab-out-cn) by [祥子](https://github.com/xiaoxiangxie)
+由 [Zara](https://x.com/zarazhangrui) 构建 | 祥子 Updated
