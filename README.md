@@ -1,6 +1,8 @@
-# Tab Out
+# Tab Out 中文版
 
 **管理你的标签页。**
+
+> 本项目基于 [tab-out](https://github.com/zarazhangrui/tab-out) 进行中文本地化修改，所有功能版权归原作者所有。
 
 Tab Out 是一个 Chrome 扩展，它将你的新标签页替换为一个仪表盘，展示你打开的所有标签页。标签页按域名分组，主页（Gmail、X、LinkedIn 等）会被归入单独的分组。关闭标签页时还有动听的嗖嗖声和五彩纸屑效果。
 
