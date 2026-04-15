@@ -360,7 +360,7 @@ header {
   visibility: hidden;
   transform: translateY(-8px);
   transition: all var(--transition-fast);
-  z-index: 100;
+  z-index: 1000;
   backdrop-filter: blur(var(--blur));
 }
 
