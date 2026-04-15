@@ -1477,6 +1477,49 @@ document.addEventListener('input', async (e) => {
 
 
 /* ----------------------------------------------------------------
+   THEME — Auto-follow system + manual toggle
+   ---------------------------------------------------------------- */
+async function initTheme() {
+  // Load saved preference
+  const { theme } = await chrome.storage.local.get('theme');
+  if (theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+  }
+}
+
+function toggleTheme() {
+  const current = document.documentElement.getAttribute('data-theme');
+  const isDark = current === 'dark' || (!current && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  const newTheme = isDark ? 'light' : 'dark';
+
+  if (newTheme === 'dark') {
+    document.documentElement.setAttribute('data-theme', 'dark');
+  } else {
+    document.documentElement.setAttribute('data-theme', 'light');
+  }
+
+  // Save preference
+  chrome.storage.local.set({ theme: newTheme });
+}
+
+// Listen for system theme changes when no manual preference is set
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+  const savedTheme = document.documentElement.getAttribute('data-theme');
+  // Only auto-update if user hasn't set a manual preference
+  if (!savedTheme) {
+    // The CSS media query will handle this automatically
+  }
+});
+
+/* ----------------------------------------------------------------
    INITIALIZE
    ---------------------------------------------------------------- */
-renderDashboard();
+initTheme().then(() => {
+  // Setup theme toggle button
+  const themeToggle = document.getElementById('themeToggle');
+  if (themeToggle) {
+    themeToggle.addEventListener('click', toggleTheme);
+  }
+
+  renderDashboard();
+});

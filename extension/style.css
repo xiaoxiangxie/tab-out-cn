@@ -4,6 +4,7 @@
    also updating the mockup. This is the approved design.
    ============================================================ */
 
+/* ---- Theme: Light (default) ---- */
 :root {
   --ink: #1a1613;
   --paper: #f8f5f0;
@@ -18,6 +19,42 @@
   --status-abandoned: #b35a5a;
   --card-bg: #fffdf9;
   --shadow: rgba(26, 22, 19, 0.06);
+}
+
+/* ---- Theme: Dark ---- */
+[data-theme="dark"] {
+  --ink: #f8f5f0;
+  --paper: #1a1613;
+  --warm-gray: #2d2825;
+  --muted: #7a716a;
+  --accent-amber: #e8956a;
+  --accent-sage: #7a9a82;
+  --accent-slate: #7a8b9a;
+  --accent-rose: #c27a7a;
+  --status-active: #6a9a6a;
+  --status-cooling: #d8a94e;
+  --status-abandoned: #c27a7a;
+  --card-bg: #241f1c;
+  --shadow: rgba(0, 0, 0, 0.3);
+}
+
+/* ---- Auto follow system preference ---- */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --ink: #f8f5f0;
+    --paper: #1a1613;
+    --warm-gray: #2d2825;
+    --muted: #7a716a;
+    --accent-amber: #e8956a;
+    --accent-sage: #7a9a82;
+    --accent-slate: #7a8b9a;
+    --accent-rose: #c27a7a;
+    --status-active: #6a9a6a;
+    --status-cooling: #d8a94e;
+    --status-abandoned: #c27a7a;
+    --card-bg: #241f1c;
+    --shadow: rgba(0, 0, 0, 0.3);
+  }
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -79,6 +116,69 @@ header {
   font-weight: 400;
   letter-spacing: 0.5px;
   text-transform: uppercase;
+}
+
+/* ---- Theme Toggle Button ---- */
+.header-right {
+  display: flex;
+  align-items: center;
+}
+
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--warm-gray);
+  border-radius: 8px;
+  background: var(--card-bg);
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.theme-toggle:hover {
+  border-color: var(--ink);
+  transform: translateY(-1px);
+}
+
+.theme-toggle svg {
+  width: 18px;
+  height: 18px;
+  color: var(--muted);
+  transition: all 0.2s;
+  position: absolute;
+}
+
+.theme-toggle:hover svg {
+  color: var(--ink);
+}
+
+/* Show sun icon by default, hide moon */
+.theme-toggle .icon-sun {
+  opacity: 1;
+}
+.theme-toggle .icon-moon {
+  opacity: 0;
+}
+
+/* When dark mode is active, swap icons */
+[data-theme="dark"] .theme-toggle .icon-sun {
+  opacity: 0;
+}
+[data-theme="dark"] .theme-toggle .icon-moon {
+  opacity: 1;
+}
+
+/* Also swap icons when system is dark (without explicit data-theme) */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .theme-toggle .icon-sun {
+    opacity: 0;
+  }
+  :root:not([data-theme="light"]) .theme-toggle .icon-moon {
+    opacity: 1;
+  }
 }
 
 /* ---- Tab cleanup banner ---- */
