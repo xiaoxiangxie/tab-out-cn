@@ -415,23 +415,51 @@ header {
 }
 
 /* Ensure text is visible in all themes */
-[data-theme="glass"] .theme-option,
-[data-theme="cyber"] .theme-option,
-[data-theme="retro"] .theme-option {
+.theme-dropdown .theme-option {
+  color: #1a1a1a;
+}
+
+.theme-dropdown .theme-option:hover {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.theme-dropdown .theme-option.active {
+  background: rgba(0, 0, 0, 0.08);
+  color: var(--accent);
+  font-weight: 500;
+}
+
+/* Dark theme overrides */
+[data-theme="glass"] .theme-dropdown .theme-option,
+[data-theme="cyber"] .theme-dropdown .theme-option,
+[data-theme="retro"] .theme-dropdown .theme-option,
+[data-theme="dark"] .theme-dropdown .theme-option {
   color: #ffffff;
 }
 
-[data-theme="glass"] .theme-option:hover,
-[data-theme="cyber"] .theme-option:hover,
-[data-theme="retro"] .theme-option:hover {
+[data-theme="glass"] .theme-dropdown .theme-option:hover,
+[data-theme="cyber"] .theme-dropdown .theme-option:hover,
+[data-theme="retro"] .theme-dropdown .theme-option:hover,
+[data-theme="dark"] .theme-dropdown .theme-option:hover {
   background: rgba(255, 255, 255, 0.1);
 }
 
-[data-theme="glass"] .theme-option.active,
-[data-theme="cyber"] .theme-option.active,
-[data-theme="retro"] .theme-option.active {
-  color: #64b5f6;
+[data-theme="glass"] .theme-dropdown .theme-option.active,
+[data-theme="cyber"] .theme-dropdown .theme-option.active,
+[data-theme="retro"] .theme-dropdown .theme-option.active,
+[data-theme="dark"] .theme-dropdown .theme-option.active {
+  color: var(--accent);
   background: rgba(255, 255, 255, 0.1);
+}
+
+/* Light auto theme (when system is light) */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) .theme-dropdown .theme-option {
+    color: #1a1a1a;
+  }
+  :root:not([data-theme]) .theme-dropdown .theme-option.active {
+    color: var(--accent);
+  }
 }
 
 .theme-option .theme-preview {
