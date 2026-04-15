@@ -32,7 +32,7 @@ https://github.com/xiaoxiangxie/tab-out-cn
 - **稍后处理** 关闭标签页前先收藏到清单
 - **本地主机分组** 显示端口号，区分不同的 vibe coding 项目
 - **可展开的分组** 默认显示前 8 个标签页，点击"+N 更多"展开
-- **多主题切换** 支持 6 种视觉风格，满足不同审美需求
+- **多主题切换** 支持 8 种视觉风格，满足不同审美需求
 - **100% 本地** 你的数据不会离开你的电脑
 - **纯 Chrome 扩展** 无服务器、无 Node.js、无 npm，只需加载扩展即可
 
@@ -52,6 +52,9 @@ https://github.com/xiaoxiangxie/tab-out-cn
 | **玻璃拟态** | 毛玻璃效果、紫蓝渐变、现代感强 |
 | **赛博朋克** | 霓虹发光、深色背景、科技感 |
 | **复古未来** | 80年代风、CRT扫描线、赛博朋克 |
+| **Liquid Glass** | 苹果液态玻璃风格、通透质感、光影流动 |
+| **手帐风** | 温暖奶油色、纸质纹理、柔和手绘感 |
+| **Hello Kitty** | 粉红少女风、樱花飘落、可爱圆润 |
 
 主题偏好会自动保存，下次打开时自动应用。
 
@@ -110,4 +113,4 @@ MIT
 
 ---
 
-由 [Zara](https://x.com/zarazhangrui) 构建 | 中文本地化由 Claude Code 完成
+由 [Zara](https://x.com/zarazhangrui) 构建 | 中文本地化 [Tab Out CN](https://github.com/xiaoxiangxie/tab-out-cn) by [祥子](https://github.com/xiaoxiangxie)
